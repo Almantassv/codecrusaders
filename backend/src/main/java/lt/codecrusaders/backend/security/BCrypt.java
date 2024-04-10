@@ -1,4 +1,4 @@
-package lt.codecrusaders.backend.utils;
+package lt.codecrusaders.backend.security;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.security.SecureRandom;

@@ -1,0 +1,33 @@
+package lt.codecrusaders.backend.controllers;
+
+import lt.codecrusaders.backend.model.dto.UserLoginDTO;
+import lt.codecrusaders.backend.model.dto.UserRegisterDTO;
+import lt.codecrusaders.backend.model.fdto.UserLoginFDTO;
+import lt.codecrusaders.backend.model.fdto.UserRegisterFDTO;
+import lt.codecrusaders.backend.repositories.UserRepository;
+import lt.codecrusaders.backend.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class AuthController {
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private final UserService userService = new UserService(userRepository);
+
+    @PostMapping(value = "/api/login")
+    public ResponseEntity<UserLoginDTO> login(@RequestBody UserLoginFDTO userLoginFDTO) {
+        UserLoginDTO loggedUser = userService.authUser(userLoginFDTO);
+        return ResponseEntity.ok(loggedUser);
+    }
+
+    @PostMapping(value = "/api/register")
+    public ResponseEntity<UserRegisterDTO> register(@RequestBody UserRegisterFDTO userRegisterFDTO) {
+        UserRegisterDTO addedUser = userService.registerUser(userRegisterFDTO);
+        return ResponseEntity.ok(addedUser);
+    }
+}

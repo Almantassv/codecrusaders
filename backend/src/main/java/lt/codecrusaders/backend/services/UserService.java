@@ -1,20 +1,36 @@
 package lt.codecrusaders.backend.services;
 
 import lombok.RequiredArgsConstructor;
-import lt.codecrusaders.backend.db.UserRepository;
-import lt.codecrusaders.backend.dtos.UserLoginDTO;
-import lt.codecrusaders.backend.dtos.UserRegisterDTO;
-import lt.codecrusaders.backend.fdtos.UserLoginFDTO;
-import lt.codecrusaders.backend.fdtos.UserRegisterFDTO;
-import lt.codecrusaders.backend.obj.User;
-import lt.codecrusaders.backend.utils.BCrypt;
+import lt.codecrusaders.backend.repositories.UserRepository;
+import lt.codecrusaders.backend.model.dto.UserLoginDTO;
+import lt.codecrusaders.backend.model.dto.UserRegisterDTO;
+import lt.codecrusaders.backend.model.fdto.UserLoginFDTO;
+import lt.codecrusaders.backend.model.fdto.UserRegisterFDTO;
+import lt.codecrusaders.backend.model.entity.Roles;
+import lt.codecrusaders.backend.model.entity.User;
+import lt.codecrusaders.backend.security.BCrypt;
+import lt.codecrusaders.backend.security.TokenProvider;
 import lt.codecrusaders.backend.utils.EmailValidator;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final TokenProvider tokenProvider = new TokenProvider();
+
+    public User getUserByUsername(String username) {
+        User foundUser = userRepository.findByUsername(username).orElse(null);
+        if (foundUser != null) {
+            List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(Roles.getRoleById(foundUser.getRoleID()).getRoleName()));
+            foundUser.setAuthorities(authorities);
+        }
+        return foundUser;
+    }
 
     public UserLoginDTO authUser(UserLoginFDTO userLoginFDTO) {
         UserLoginDTO userLoginDTO = new UserLoginDTO();
@@ -24,12 +40,12 @@ public class UserService {
                 throw new IllegalArgumentException("Username or password cannot be null");
             } else if (userLoginFDTO.getUsername().isEmpty() || userLoginFDTO.getPassword().isEmpty()) {
                 throw new IllegalArgumentException("Username or password cannot be empty");
-            } else if (userRepository.findByUsername(userLoginFDTO.getUsername()).isEmpty() ||
-                    !bcrypt.matches(userLoginFDTO.getPassword(), userRepository.findByUsername(userLoginFDTO.getUsername()).get().getPassword())) {
+            }
+            User foundUser = getUserByUsername(userLoginFDTO.getUsername());
+            if (foundUser == null || !bcrypt.matches(userLoginFDTO.getPassword(), foundUser.getPassword())) {
                 throw new IllegalArgumentException("Incorrect username or password");
             }
-            userLoginDTO.setSuccess(true);
-            userLoginDTO.setMessage("Successfully logged in");
+            userLoginDTO.setToken(tokenProvider.generateToken(foundUser));
         } catch(IllegalArgumentException e) {
             userLoginDTO.setMessage(e.getMessage());
         }
@@ -57,10 +73,11 @@ public class UserService {
             }
             BCrypt bcrypt = new BCrypt();
             userRegisterFDTO.setPassword(bcrypt.hashPassword(userRegisterFDTO.getPassword()));
+            User user = new User(userRegisterFDTO);
+            user.setRoleID(Roles.USER.getRoleId());
+            userRepository.save(user);
             userRegisterDTO.setSuccess(true);
             userRegisterDTO.setMessage("Successfully added user");
-            User user = new User(userRegisterFDTO);
-            userRepository.save(user);
         } catch(IllegalArgumentException e) {
             userRegisterDTO.setMessage(e.getMessage());
         }

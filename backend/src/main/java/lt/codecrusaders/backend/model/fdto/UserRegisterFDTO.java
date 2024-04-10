@@ -1,12 +1,8 @@
-package lt.codecrusaders.backend.fdtos;
+package lt.codecrusaders.backend.model.fdto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class UserRegisterFDTO {
     private String username;
     private String email;

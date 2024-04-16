@@ -1,0 +1,25 @@
+*{
+    border: 2px solid green;
+}
+.columns {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .task {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  
+  .task-details {
+    align-self: flex-end;
+  }

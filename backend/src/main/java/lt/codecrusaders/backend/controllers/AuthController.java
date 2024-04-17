@@ -22,12 +22,18 @@ public class AuthController {
     @PostMapping(value = "/api/login")
     public ResponseEntity<UserLoginDTO> login(@RequestBody UserLoginFDTO userLoginFDTO) {
         UserLoginDTO loggedUser = userService.authUser(userLoginFDTO);
+        if (loggedUser.getToken() == null) {
+            return ResponseEntity.badRequest().body(loggedUser);
+        }
         return ResponseEntity.ok(loggedUser);
     }
 
     @PostMapping(value = "/api/register")
     public ResponseEntity<UserRegisterDTO> register(@RequestBody UserRegisterFDTO userRegisterFDTO) {
         UserRegisterDTO addedUser = userService.registerUser(userRegisterFDTO);
+        if (!addedUser.isSuccess()) {
+            return ResponseEntity.badRequest().body(addedUser);
+        }
         return ResponseEntity.ok(addedUser);
     }
 }

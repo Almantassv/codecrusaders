@@ -62,8 +62,14 @@ public class UserService {
                 throw new IllegalArgumentException("Username / email / password / confirmPassword cannot be empty");
             } else if (userRepository.findByUsername(userRegisterFDTO.getUsername()).isPresent()) {
                 throw new IllegalArgumentException("Username already exists");
-            } else if (userRegisterFDTO.getPassword().length() < 8) {
-                throw new IllegalArgumentException("Password must be at least 8 characters long");
+            } else if (userRegisterFDTO.getUsername().trim().isEmpty()) {
+                throw new IllegalArgumentException("Username cannot be empty");
+            } else if (userRegisterFDTO.getPassword().trim().isEmpty()) {
+                throw new IllegalArgumentException("Password cannot be empty");
+            } else if (userRegisterFDTO.getPassword().length() < 8 || userRegisterFDTO.getPassword().length() > 20) {
+                throw new IllegalArgumentException("Password must be between 8 and 20 characters long");
+            } else if (userRegisterFDTO.getUsername().length() < 3 || userRegisterFDTO.getUsername().length() > 32) {
+                throw new IllegalArgumentException("Username must be between 3 and 32 characters long");
             } else if (!userRegisterFDTO.getConfirmPassword().equals(userRegisterFDTO.getPassword())) {
                 throw new IllegalArgumentException("Passwords do not match");
             } else if (!emailValidator.validateEmail(userRegisterFDTO.getEmail())) {

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { fa-envelope-o } from 'react-icons/fa';
 
 const Login = () => {
     // State to hold user's credentials
@@ -55,8 +54,13 @@ const Login = () => {
                         onChange={handleChange}
                         required
                     />
+
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit" class="btn">Login</button>
+
+                <div class="register-link">
+                    <p>Don't have an account? <a href="#">Register</a></p>
+                </div>
             </form>
         </div>
     );

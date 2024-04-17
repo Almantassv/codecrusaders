@@ -7,6 +7,8 @@ const Login = () => {
         password: ''
     });
 
+    const [showPassword, setShowPassword] = useState(false); // State to track password visibility
+
     //Function to handle changes in input fields
     const handleChange = (e) => {
         setFormData({
@@ -27,6 +29,11 @@ const Login = () => {
         });
     };
 
+    // Function to toggle password visibility
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
         <div class="wrapper">
             <h2>Login</h2>
@@ -45,18 +52,17 @@ const Login = () => {
                 <label htmlFor="password">Password </label>
                 <div class="input-box">
                     
-                    <input
-                        type="text"
+                <input
+                        type={showPassword ? 'text' : 'password'} // Toggle between 'password' and 'text'
                         id="password"
                         name="password"
-                        placeholder='Enter password'
+                        placeholder="Enter password"
                         value={formData.password}
                         onChange={handleChange}
                         required
                     />
-
                 </div>
-                <button type="submit" class="btn">Login</button>
+                <button type="submit" class="btn">Log In</button>
 
                 <div class="register-link">
                     <p>Don't have an account? <a href="#">Register</a></p>

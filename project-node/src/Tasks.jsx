@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Sectionprj = () => {
+const Taskss = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
 
@@ -44,4 +44,4 @@ const Sectionprj = () => {
   );
 };
 
-export default Sectionprj;
+export default Taskss;

@@ -1,19 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
-import Sectionprj from './Sectionprj';
+import Taskss from './Tasks';
+import TaskApp from './Projects';
 
 
 const Headers = () => {
   return (
     <Router>
       <div className="navbar">
-        <NavLink to="/" exact activeClassName="active">Home</NavLink>
         <NavLink to="/projects" activeClassName="active">Projects</NavLink>
         <NavLink to="/tasks" activeClassName="active">Tasks</NavLink>
         <NavLink to="/calendar" activeClassName="active">Calendar</NavLink>
       </div>
 
-      <Route exact path="/" component={Home} />
       <Route path="/projects" component={Projects} />
       <Route path="/tasks" component={Tasks} />
       <Route path="/calendar" component={Calendar} />
@@ -21,16 +20,14 @@ const Headers = () => {
   );
 };
 
-const Home = () => {
-  return <h2>Home</h2>;
-};
+
 
 const Projects = () => {
-  return <Sectionprj/>;
+  return <TaskApp/> ;
 };
 
 const Tasks = () => {
-  return <h2>Tasks</h2>;
+  return <Taskss/>;
 };
 
 const Calendar = () => {

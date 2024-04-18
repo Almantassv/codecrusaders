@@ -1,0 +1,45 @@
+.calenadr-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #AD92FB;
+}
+
+.calenadr {
+  background-color: #E4DBFE;
+  border: 2px solid #855BF9;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.date,
+.time {
+  font-size: 24px;
+  font-weight: bold;
+  color: #855BF9;
+}
+
+.dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.date-item {
+  font-size: 16px;
+  padding: 5px;
+  text-align: center;
+  background-color: #E4DBFE;
+  color: #855BF9;
+  border-radius: 5px;
+}
+
+.date-item.today {
+  border: 2px solid red;
+}
+
+.date-item.saturday,
+.date-item.sunday {
+  color: red;
+}

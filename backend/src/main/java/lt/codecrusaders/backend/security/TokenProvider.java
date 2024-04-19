@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Component
 public class TokenProvider {
     private final String jwtSecret = "v9y$B&E)H@MbQeThWmZq4t7w!z%C*F-JaNdRfUjXn2r5u8x/A?D(G+KbPeShVkYp";
-    private final Long jwtExpirationMinutes = 10L;
+    private final Long jwtExpirationMinutes = 2880L;
 
     public String generateToken(User user) {
 

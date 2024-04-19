@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Service
@@ -55,6 +57,7 @@ public class UserService {
     public UserRegisterDTO registerUser(UserRegisterFDTO userRegisterFDTO) {
         UserRegisterDTO userRegisterDTO = new UserRegisterDTO();
         EmailValidator emailValidator = new EmailValidator();
+        Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
         try {
             if (userRegisterFDTO.getUsername() == null || userRegisterFDTO.getEmail() == null || userRegisterFDTO.getPassword() == null || userRegisterFDTO.getConfirmPassword() == null) {
                 throw new IllegalArgumentException("Username / email / password / confirmPassword cannot be null");
@@ -66,6 +69,12 @@ public class UserService {
                 throw new IllegalArgumentException("Username cannot be empty");
             } else if (userRegisterFDTO.getPassword().trim().isEmpty()) {
                 throw new IllegalArgumentException("Password cannot be empty");
+            } else if (userRegisterFDTO.getUsername().contains(" ")) {
+                throw new IllegalArgumentException("Username cannot contain spaces");
+            } else if (userRegisterFDTO.getPassword().contains(" ")) {
+                throw new IllegalArgumentException("Password cannot contain spaces");
+            } else if (p.matcher(userRegisterFDTO.getUsername()).find()) {
+                throw new IllegalArgumentException("Username cannot contain special characters");
             } else if (userRegisterFDTO.getPassword().length() < 8 || userRegisterFDTO.getPassword().length() > 20) {
                 throw new IllegalArgumentException("Password must be between 8 and 20 characters long");
             } else if (userRegisterFDTO.getUsername().length() < 3 || userRegisterFDTO.getUsername().length() > 32) {

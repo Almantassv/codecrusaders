@@ -1,31 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
-import Taskss from './Tasks';
-import TaskApp from './Projects';
 import Calenadr from './Calendar';
 import './Css/Headers.css'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-class EmailShortener extends React.Component {
-  shortenEmail = (email) => {
-    const [username] = email.split(5); 
-    if (username.length > 5) {
-      return (
-        <div>
-          <i className="fas fa-user-alt" style={{ fontSize: '36px' }}></i> {`${username.slice(0, 5)}...`}
-        </div>
-      );
+const EmailShortener = ({ email }) => {
+  const [isShortened, setIsShortened] = useState(true);
+
+  const toggleEmail = () => {
+    setIsShortened(!isShortened);
+  };
+
+  const renderEmail = () => {
+    if (isShortened) {
+      const [username] = email.split('@');
+      return `${username.slice(0, 5)}...`;
     } else {
       return email;
     }
   };
 
-  render() {
-    const { email } = this.props;
-    const shortenedEmail = this.shortenEmail(email);
-    return <span>{shortenedEmail}</span>;
-  }
-}
+  return (
+    <span onClick={toggleEmail}>{renderEmail()}</span>
+  );
+};
+
 const Headers = () => {
   return (
     <Router>
@@ -49,15 +48,16 @@ const Headers = () => {
     </Router>
   );
 };
+
 const home = () => {
   return <div>Home</div> ;
 };
 const Projects = () => {
-  return <TaskApp/> ;
+  return <div>projects</div> ;
 };
 
 const Tasks = () => {
-  return <Taskss/>;
+  return <div>task</div>;
 };
 
 const Calendar = () => {

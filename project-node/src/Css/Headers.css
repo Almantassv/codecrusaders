@@ -29,7 +29,16 @@
 
 
 .emailcss{
-      background-color: #ccc;
+  display: flex;
+      background-color: #e3b7e7;
+      border-radius: 5%;
+      margin-right: 5px;
+      
+      height:25px;
+}
+.emailcss span{
+  display: flex;
+  align-items: center;
 }
 .flexdiv{
     display: flex;

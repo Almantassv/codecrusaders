@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 import Taskss from './Tasks';
 import TaskApp from './Projects';
 import Calenadr from './Calendar';
+import './Css/Headers.css'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class EmailShortener extends React.Component {
@@ -29,19 +30,27 @@ const Headers = () => {
   return (
     <Router>
       <div className="navbar">
+        <div className='navlink'> 
+        <NavLink to="/home" activeClassName="active">Home</NavLink>
         <NavLink to="/projects" activeClassName="active">Projects</NavLink>
         <NavLink to="/tasks" activeClassName="active">Tasks</NavLink>
         <NavLink to="/calendar" activeClassName="active">Calendar</NavLink>
-        <EmailShortener email="exampler@mail.com" />
+         </div>
+      <div className='flexdiv'>
+      <div className='emailcss'> <EmailShortener email="exampler@mail.com" /></div> 
+      <div className='loginc'>Logout</div>
       </div>
-
+      </div> 
+      <Route path="/home" component={home} />
       <Route path="/projects" component={Projects} />
       <Route path="/tasks" component={Tasks} />
       <Route path="/calendar" component={Calendar} />
     </Router>
   );
 };
-
+const home = () => {
+  return <div>Home</div> ;
+};
 const Projects = () => {
   return <TaskApp/> ;
 };

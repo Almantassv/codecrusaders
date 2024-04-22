@@ -7,7 +7,6 @@ const Calenadr = () => {
     const formattedDate = currentDate.toLocaleDateString();
     const formattedTime = currentDate.toLocaleTimeString();
   
-    const currentDay = currentDate.getDay();
     const today = currentDate.getDate();
   
     return (

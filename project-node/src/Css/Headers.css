@@ -1,0 +1,40 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+  }
+  
+  .navbar a {
+    color: #666666;
+    text-decoration: none;
+    font-size: 18px;
+    margin: 0 10px;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  .navbar a.active {
+    background-color: #ffffff;
+    color: #6a0dad;
+    padding: 5px 10px;
+  }
+  
+  .navbar i {
+    color: #ffffff;
+    margin-right: 5px;
+  }
+
+
+
+
+.emailcss{
+      background-color: #ccc;
+}
+.flexdiv{
+    display: flex;
+    align-items: center;
+}
+.loginc{
+   
+}

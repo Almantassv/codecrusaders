@@ -1,8 +1,6 @@
-// TaskApp.js
 import React, { useState, useEffect } from 'react';
-// import tasksData from './TaskObj/tasks.json'
 import Task from './TaskObj/Task';
-
+import './Css/Project.css'
 const TaskApp = () => {
     const [tasks, setTasks] = useState([]);
     const [newTask, setNewTask] = useState({
@@ -16,6 +14,8 @@ const TaskApp = () => {
     });
     const [showForm, setShowForm] = useState(false);
     const [addButtonText, setAddButtonText] = useState('Add new task');
+    const [editingTask, setEditingTask] = useState(false);
+    const [editTaskId, setEditTaskId] = useState(null);
   
     useEffect(() => {
       // localStorage
@@ -60,14 +60,37 @@ const TaskApp = () => {
       } else {
         setShowForm(false);
         setAddButtonText('Add new task');
+        setEditingTask(false);
+        setEditTaskId(null);
+        setNewTask({
+          id: '',
+          name: '',
+          description: '',
+          priority: 'Low',
+          status: 'To do',
+          creationDate: '',
+          lastUpdated: ''
+        });
       }
     };
   
     const handleCreateTask = () => {
       if (validateTask()) {
-        const updatedTasks = [...tasks, newTask];
-        setTasks(updatedTasks);
-        localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+        if (editingTask) {
+          const updatedTasks = tasks.map(task => {
+            if (task.id === editTaskId) {
+              return newTask;
+            }
+            return task;
+          });
+          setTasks(updatedTasks);
+          setEditingTask(false);
+          setEditTaskId(null);
+        } else {
+          const updatedTasks = [...tasks, newTask];
+          setTasks(updatedTasks);
+        }
+        localStorage.setItem('tasks', JSON.stringify(tasks));
         setNewTask({
           id: '',
           name: '',
@@ -93,10 +116,21 @@ const TaskApp = () => {
       setTasks(updatedTasks);
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     };
+
+    const handleEditTask = (taskId) => {
+      setEditingTask(true);
+      setEditTaskId(taskId);
+      const taskToEdit = tasks.find(task => task.id === taskId);
+      setNewTask(taskToEdit);
+      setShowForm(true);
+      setAddButtonText('Close');
+    };
   
     return (
       <div className="task-app">
+       
         <h1>Tasks</h1>
+         <div className='task-form'>
         {showForm && (
           <>
             <input
@@ -105,6 +139,7 @@ const TaskApp = () => {
               name="id"
               value={newTask.id}
               onChange={handleInputChange}
+              readOnly={editingTask}
             />
             <input
               type="text"
@@ -140,15 +175,17 @@ const TaskApp = () => {
               value={newTask.lastUpdated}
               onChange={handleInputChange}
             />
-            <button onClick={handleCreateTask}>Create</button>
+            <button onClick={handleCreateTask}>{editingTask ? 'Update' : 'Create'}</button>
           </>
         )}
         <button onClick={handleAddTask}>{addButtonText}</button>
+        </div>
         <div>
           {tasks.map((task, index) => (
             <div key={index}>
               <Task task={task} />
               <button onClick={() => handleDeleteTask(task.id)}>Delete</button>
+              <button onClick={() => handleEditTask(task.id)}>Redact</button>
             </div>
           ))}
         </div>
@@ -156,4 +193,4 @@ const TaskApp = () => {
     );
   };
   
-  export default TaskApp;
+export default TaskApp;

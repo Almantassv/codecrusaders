@@ -31,6 +31,7 @@ const Headers = () => {
     <Router>
       <div className="navbar">
         <div className='navlink'> 
+        <img src="/assets/icon.png" alt="Icon_png" />
         <NavLink to="/home" activeClassName="active">Home</NavLink>
         <NavLink to="/projects" activeClassName="active">Projects</NavLink>
         <NavLink to="/tasks" activeClassName="active">Tasks</NavLink>

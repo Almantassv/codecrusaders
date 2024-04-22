@@ -1,9 +1,12 @@
+// Navbar.jsx
 import { Link, useNavigate } from "react-router-dom";
+import { logout } from "./utils/auth/auth";
 
-const Navbar = ({ token, onLogout }) => {
+const Navbar = ({ isLoggedIn, onLogout }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    logout();
     onLogout();
     navigate('/');
   };
@@ -13,14 +16,14 @@ const Navbar = ({ token, onLogout }) => {
       <h1>Project Management</h1>
       <div className="links">
         <Link to="/">Home</Link>
-        {token && (
+        {isLoggedIn && (
           <>
             <Link to="/list">All Projects</Link>
             <Link to="/create">New Project</Link>
             <button onClick={handleLogout}>Logout</button>
           </>
         )}
-        {!token && (
+        {!isLoggedIn && (
           <>
             <Link to="/login">Login</Link>
             <Link to="/register">Register</Link>

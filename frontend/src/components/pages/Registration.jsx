@@ -31,6 +31,10 @@ const Registration = () => {
             alert('Passwords do not match');
             return;
         }
+        if (formData.username.trim() === '') {
+            alert('Username cannot be empty');
+            return;
+        }
         
             try {
               await axios.post('http://localhost:8080/api/register', formData);

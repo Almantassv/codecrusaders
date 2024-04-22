@@ -22,11 +22,12 @@ const Login = () => {
         try {
             const { username, password } = formData;
             const response = await axios.post('http://localhost:8080/api/login', { username, password });
+            console.log("Response: " + response.data.token);
             const { token } = response.data;
-            authContext.login(token);
+            authContext.loginUser(token);
             navigate('/dashboard');
         } catch (error) {
-            console.error('Error:', error);
+            console.log('Error:' + error);
             alert('Invalid username or password');
         }
     };

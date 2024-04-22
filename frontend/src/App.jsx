@@ -31,7 +31,9 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route path="/register" element={<Registration />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={
+            <PrivateRoute roles={['User']}><Dashboard /></PrivateRoute>
+            } />
             
           </Routes>
         </div>

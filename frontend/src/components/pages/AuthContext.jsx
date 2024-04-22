@@ -27,15 +27,16 @@ export const AuthProvider = ({children}) => {
         setIsLoading(false);
       }, []);
 
-    const loginUser = async (data) => {
+    const loginUser = async (token) => {
+      console.log("Data: ", token);
         try {
-          const response = await apiClient.post('/auth/authenticate', {
-            username: data.username,
-            password: data.password,
-          });
-          if (response.data) {
-            console.log(response.data);
-            const token = response.data.accessToken;
+          // const response = await apiClient.post('/api/login', {
+          //   username: data.username,
+          //   password: data.password,
+          // });
+          if (token) {
+           
+            // const token = response.data.token;
             console.log(token);
             const user = jwtDecode(token);
             console.log('User from loginUser:', user);

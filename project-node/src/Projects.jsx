@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Task from './TaskObj/Task';
-import './Css/Project.css'
+import './Css/Project.css';
+
 const TaskApp = () => {
     const [tasks, setTasks] = useState([]);
     const [newTask, setNewTask] = useState({
-      id: '',
       name: '',
       description: '',
       priority: 'Low',
       status: 'To do',
-      creationDate: '',
-      lastUpdated: ''
     });
     const [showForm, setShowForm] = useState(false);
     const [addButtonText, setAddButtonText] = useState('Add new task');
@@ -63,42 +61,33 @@ const TaskApp = () => {
         setEditingTask(false);
         setEditTaskId(null);
         setNewTask({
-          id: '',
           name: '',
           description: '',
           priority: 'Low',
           status: 'To do',
-          creationDate: '',
-          lastUpdated: ''
+  
         });
       }
     };
   
     const handleCreateTask = () => {
       if (validateTask()) {
-        if (editingTask) {
-          const updatedTasks = tasks.map(task => {
-            if (task.id === editTaskId) {
-              return newTask;
-            }
-            return task;
-          });
-          setTasks(updatedTasks);
-          setEditingTask(false);
-          setEditTaskId(null);
-        } else {
-          const updatedTasks = [...tasks, newTask];
-          setTasks(updatedTasks);
-        }
-        localStorage.setItem('tasks', JSON.stringify(tasks));
+        const id = '#' + Math.random().toString(36).substr(2, 9); // Generate random id
+        const creationDate = new Date().toISOString(); // Set creation date
+        const updatedTask = {
+          ...newTask,
+          id,
+          creationDate,
+          lastUpdated: creationDate // Set last updated to creation date initially
+        };
+        const updatedTasks = [...tasks, updatedTask];
+        setTasks(updatedTasks);
+        localStorage.setItem('tasks', JSON.stringify(updatedTasks));
         setNewTask({
-          id: '',
           name: '',
           description: '',
           priority: 'Low',
-          status: 'To do',
-          creationDate: '',
-          lastUpdated: ''
+       
         });
         setShowForm(false);
         setAddButtonText('Add new task');
@@ -128,64 +117,46 @@ const TaskApp = () => {
   
     return (
       <div className="task-app">
-       
         <h1>Tasks</h1>
-         <div className='task-form'>
-        {showForm && (
-          <>
-            <input
-              type="text"
-              placeholder="Task ID"
-              name="id"
-              value={newTask.id}
-              onChange={handleInputChange}
-              readOnly={editingTask}
-            />
-            <input
-              type="text"
-              placeholder="Task Name"
-              name="name"
-              value={newTask.name}
-              onChange={handleInputChange}
-            />
-            <input
-              type="text"
-              placeholder="Description"
-              name="description"
-              value={newTask.description}
-              onChange={handleInputChange}
-            />
-            <div>
-              <button onClick={handlePriorityChange}>{newTask.priority}</button>
-            </div>
-            <div>
-              <button onClick={handleStatusChange}>{newTask.status}</button>
-            </div>
-            <input
-              type="text"
-              placeholder="Creation Date"
-              name="creationDate"
-              value={newTask.creationDate}
-              onChange={handleInputChange}
-            />
-            <input
-              type="text"
-              placeholder="Last Updated"
-              name="lastUpdated"
-              value={newTask.lastUpdated}
-              onChange={handleInputChange}
-            />
-            <button onClick={handleCreateTask}>{editingTask ? 'Update' : 'Create'}</button>
-          </>
-        )}
-        <button onClick={handleAddTask}>{addButtonText}</button>
+        <div className='task-form'>
+          {showForm && (
+            <>
+              
+              <input
+                type="text"
+                placeholder="Task Name"
+                name="name"
+                value={newTask.name}
+                onChange={handleInputChange}
+              />
+              <input
+                type="text"
+                placeholder="Description"
+                name="description"
+                value={newTask.description}
+                onChange={handleInputChange}
+              />
+              <div>
+                <button onClick={handlePriorityChange}>{newTask.priority}</button>
+              </div>
+              <div>
+                <button onClick={handleStatusChange}>{newTask.status}</button>
+              </div>
+            
+              <button onClick={handleCreateTask}>{editingTask ? 'Update' : 'Create'}</button>
+            </>
+          )}
+        
+          <button onClick={handleAddTask}>{addButtonText}</button>
         </div>
         <div>
+          
           {tasks.map((task, index) => (
             <div key={index}>
               <Task task={task} />
+         
               <button onClick={() => handleDeleteTask(task.id)}>Delete</button>
-              <button onClick={() => handleEditTask(task.id)}>Redact</button>
+              <button onClick={() => handleEditTask(task.id)}>Edit</button>
             </div>
           ))}
         </div>

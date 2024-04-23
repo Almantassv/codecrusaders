@@ -26,9 +26,14 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Project>> getAllProjects() {
-        List<Project> projects = projectService.getAllProjects();
-        return new ResponseEntity<>(projects, HttpStatus.OK);
+    public ResponseEntity<List<Project>> getProjects(@RequestParam(required = false, name = "search") String searchQuery) {
+        List<Project> projects;
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            projects = projectService.findProjectsByName(searchQuery);;
+        } else {
+            projects = projectService.getAllProjects();
+        }
+        return new ResponseEntity<>(projects, (projects.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.FOUND));
     }
 
     @PostMapping

@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import { apiClient } from './apis';
 
 export const AuthContext = createContext();
 
@@ -27,24 +26,16 @@ export const AuthProvider = ({children}) => {
         setIsLoading(false);
       }, []);
 
-    const loginUser = async (data) => {
+      const loginUser = async (token) => {
         try {
-          const response = await apiClient.post('/auth/authenticate', {
-            username: data.username,
-            password: data.password,
-          });
-          if (response.data) {
-            console.log(response.data);
-            const token = response.data.accessToken;
-            console.log(token);
+          if (token) {
             const user = jwtDecode(token);
-            console.log('User from loginUser:', user);
             localStorage.setItem('token', token);
             setToken(token);
             setUser(user);
             return { token, user };
           } else {
-            throw new Error('Response data is undefined');
+            throw new Error('Token is missing or empty');
           }
         } catch (error) {
           console.error('Failed to log in:', error);

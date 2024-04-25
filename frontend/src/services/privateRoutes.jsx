@@ -16,7 +16,7 @@ function PrivateRoute({ children, roles }) {
     // ir jeigu roles nėra, tai vartotojas neturi roles, kurie gali pasiekti šį komponentą
     // todėl mes nukreipiame vartotoją į pagrindinį puslapį '/'
     if (!isLoading && (!user || !roles.includes(user.rol[0]))) {
-      navigate('/');
+      navigate('/login');
     }
     // isLoading, user, roles, navigate yra kintamieji, kurie yra naudojami useEffect() metode
     // Naudoti reikia, kad patikrinti ar vartotojas yra prisijungęs ir ar jis turi roles, kurie gali pasiekti šį komponentą

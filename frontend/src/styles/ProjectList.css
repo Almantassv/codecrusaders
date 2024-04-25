@@ -1,0 +1,84 @@
+.projects-container {
+    background-color: #262774;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .projects-title {
+    color: #fff;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 1.5rem;
+  }
+  
+  .project-preview {
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+  }
+
+  .project-preview:hover {
+    transform: scale(1.01); /* Apply the hover effect by scaling the card */
+  }
+  
+  .project-preview a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .project-preview h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .project-preview p {
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+  }
+  
+  .project-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  .project-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .action-btn {
+    background-color: #8b5cf6;
+    color: #fff;
+    border: none;
+    padding: 0.5rem;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    border-radius: 0.25rem;
+  }
+
+
+  .new-project-btn:hover {
+    transform: scale(0.9);
+    transition-duration: 0.1s;
+  }
+  
+  
+  .new-project-btn {
+    margin-top: 2rem;
+    background-color: #8b5cf6;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+  }

@@ -9,6 +9,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    min-width: 100%;
     background: linear-gradient(90deg, #7359FB 0%, #E147AB 100%)
 }
 
@@ -89,4 +90,9 @@ body {
 .register-link p a:hover {
     text-decoration: underline;
 
+}
+
+.login-link {
+    margin-top: 5%;
+    text-align: center;
 }

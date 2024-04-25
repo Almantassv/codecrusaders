@@ -1,11 +1,15 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../services/AuthContext";
+import "../../styles/Navbar.css";
 
-const Navbar = ({ token, onLogout }) => {
+const Navbar = () => {
+  const { token, logoutUser } = useAuth(); // Access token and logoutUser method from AuthContext
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    onLogout();
-    navigate('/');
+    logoutUser(); // Call logoutUser method from AuthContext
+    navigate("/");
   };
 
   return (

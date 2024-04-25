@@ -1,5 +1,6 @@
-import { useContext } from 'react';
-import { AuthContext } from './AuthContext';
+import { useContext } from "react";
+import { AuthContext } from "./AuthContext";
+AuthContext
 
 // Realiai, useAuth yra funkcija kuri grąžina AuthContext objektą iš useContext() metodo
 // Tai mes ta funkcija pernaudosime ištraukiant specifinius duomenys pernaudojant

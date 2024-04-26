@@ -14,8 +14,7 @@ import java.util.Collection;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-
-    private Integer id;
+    private long id;
 
     private String username;
     private String email;

@@ -1,7 +1,9 @@
 package lt.codecrusaders.backend.controllers;
 
 import lt.codecrusaders.backend.model.dto.ProjectCreationDTO;
+import lt.codecrusaders.backend.model.dto.TaskCreationDTO;
 import lt.codecrusaders.backend.model.entity.Project;
+import lt.codecrusaders.backend.model.entity.Task;
 import lt.codecrusaders.backend.services.ProjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +70,10 @@ public class ProjectController {
         }
     }
 
-
+    @PostMapping("/{id}/tasks")
+    public ResponseEntity<Task> createProjectTask(@PathVariable Long id, @RequestBody TaskCreationDTO taskCreationDTO) {
+        System.out.println(id);
+        Task createdTask = projectService.createProjectTask(id, taskCreationDTO);
+        return new ResponseEntity<>(createdTask, (createdTask != null ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST));
+    }
 }

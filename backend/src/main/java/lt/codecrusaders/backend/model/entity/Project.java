@@ -1,52 +1,40 @@
 package lt.codecrusaders.backend.model.entity;
 
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lt.codecrusaders.backend.model.dto.ProjectCreationDTO;
 
-@AllArgsConstructor
-@NoArgsConstructor
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Table(name = "projects")
+@Table(name = "\"projects\"")
+@Data
 public class Project {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long id;
+
     private String name;
     private String description;
     @Enumerated(EnumType.STRING)
     private ProjectStatus status;
 
-    public Long getId() {
-        return id;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks;
+
+    public Project(ProjectCreationDTO projectCreationDTO) {
+        this.name = projectCreationDTO.getName();
+        this.description = projectCreationDTO.getDescription();
+        this.status = projectCreationDTO.getStatus();
+        this.tasks = new ArrayList<>();
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Project() {
+
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public ProjectStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ProjectStatus status) {
-        this.status = status;
+    public void addTask(Task task) {
+        tasks.add(task);
     }
 }

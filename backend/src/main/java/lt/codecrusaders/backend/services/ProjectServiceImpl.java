@@ -1,10 +1,15 @@
 package lt.codecrusaders.backend.services;
 
 import lt.codecrusaders.backend.model.dto.ProjectCreationDTO;
+import lt.codecrusaders.backend.model.dto.TaskCreationDTO;
+import lt.codecrusaders.backend.model.entity.EPriority;
+import lt.codecrusaders.backend.model.entity.EStatus;
 import lt.codecrusaders.backend.model.entity.Project;
+import lt.codecrusaders.backend.model.entity.Task;
 import lt.codecrusaders.backend.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,10 +24,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project createProject(ProjectCreationDTO projectCreationDTO) {
-        Project project = new Project();
-        project.setName(projectCreationDTO.getName());
-        project.setDescription(projectCreationDTO.getDescription());
-        project.setStatus(projectCreationDTO.getStatus());
+        Project project = new Project(projectCreationDTO);
         return projectRepository.save(project);
     }
 
@@ -53,5 +55,26 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
+    }
+
+    @Override
+    public List<Project> findProjectsByName(String name) { return projectRepository.findByNameContaining(name); }
+
+    @Override
+    public Task createProjectTask(Long projectId, TaskCreationDTO taskCreationDTO) {
+        Project project = getProjectById(projectId);
+        if (project == null) { return null; }
+        Task projectTask = new Task();
+        Date currentDate = new Date();
+        projectTask.setName(taskCreationDTO.getName());
+        projectTask.setDescription(taskCreationDTO.getDescription());
+        projectTask.setStatus(EStatus.valueOf(taskCreationDTO.getStatus()));
+        projectTask.setPriority(EPriority.valueOf(taskCreationDTO.getPriority()));
+        projectTask.setCreated(currentDate);
+        projectTask.setEdited(currentDate);
+        projectTask.setProject(project);
+        project.addTask(projectTask);
+        projectRepository.save(project);
+        return projectTask;
     }
 }

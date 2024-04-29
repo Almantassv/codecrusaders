@@ -14,6 +14,9 @@ public interface ProjectService {
     Project updateProject(Long id, Project project);
     List<Project> getAllProjects();
     List<Project> findProjectsByName(String name);
-
     Task createProjectTask(Long projectId, TaskCreationDTO taskCreationDTO);
+    boolean deleteProjectTask(Long projectId, Long taskId);
+    Task updateProjectTask(Long id, Long taskID, Task task);
+    List<Task> getAllProjectTasks(Long projectId);
+    List<Task> findProjectTasksByName(Long projectId, String name);
 }

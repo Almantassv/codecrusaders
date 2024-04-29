@@ -6,8 +6,8 @@ import lombok.*;
 
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "\"tasks\"")
 public class Task {

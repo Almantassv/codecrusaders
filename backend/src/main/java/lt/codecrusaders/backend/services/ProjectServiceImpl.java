@@ -7,6 +7,7 @@ import lt.codecrusaders.backend.model.entity.EStatus;
 import lt.codecrusaders.backend.model.entity.Project;
 import lt.codecrusaders.backend.model.entity.Task;
 import lt.codecrusaders.backend.repositories.ProjectRepository;
+import lt.codecrusaders.backend.repositories.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,9 +18,11 @@ import java.util.Optional;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final TaskRepository taskRepository;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, TaskRepository taskRepository) {
         this.projectRepository = projectRepository;
+        this.taskRepository = taskRepository;
     }
 
     @Override
@@ -76,5 +79,44 @@ public class ProjectServiceImpl implements ProjectService {
         project.addTask(projectTask);
         projectRepository.save(project);
         return projectTask;
+    }
+
+    @Override
+    public boolean deleteProjectTask(Long projectId, Long taskId) {
+        Optional<Task> optionalTask = taskRepository.findById(taskId);
+        if (optionalTask.isPresent()) {
+            Task task = optionalTask.get();
+            if (task.getProject().getId() == projectId) {
+                taskRepository.delete(task);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Task updateProjectTask(Long id, Long taskID, Task task) {
+        Optional<Task> optionalTask = taskRepository.findById(taskID);
+        if (optionalTask.isPresent()) {
+            Task existingTask = optionalTask.get();
+            existingTask.setName(task.getName());
+            existingTask.setDescription(task.getDescription());
+            existingTask.setStatus(task.getStatus());
+            existingTask.setPriority(task.getPriority());
+            existingTask.setEdited(new Date());
+            return taskRepository.save(existingTask);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Task> getAllProjectTasks(Long projectId) {
+        Project project = getProjectById(projectId);
+        return project.getTasks();
+    }
+
+    @Override
+    public List<Task> findProjectTasksByName(Long projectId, String name) {
+        return taskRepository.findByProjectIdAndNameContaining(projectId, name);
     }
 }

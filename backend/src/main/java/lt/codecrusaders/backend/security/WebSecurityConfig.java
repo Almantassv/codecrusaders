@@ -34,6 +34,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         return http.authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**", "/authenticate").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/projects").hasAnyAuthority(Roles.USER.getRoleName(), Roles.ADMIN.getRoleName())
                         .requestMatchers(HttpMethod.POST,"/api/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/register").permitAll()

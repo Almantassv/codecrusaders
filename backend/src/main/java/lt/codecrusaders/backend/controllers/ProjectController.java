@@ -19,7 +19,6 @@ import java.util.List;
 @RequestMapping("/api/projects")
 @Validated
 public class ProjectController {
-
     private final ProjectService projectService;
 
     @Autowired
@@ -31,7 +30,7 @@ public class ProjectController {
     public ResponseEntity<List<Project>> getProjects(@RequestParam(required = false, name = "search") String searchQuery) {
         List<Project> projects;
         if (searchQuery != null && !searchQuery.isEmpty()) {
-            projects = projectService.findProjectsByName(searchQuery);;
+            projects = projectService.findProjectsByName(searchQuery);
         } else {
             projects = projectService.getAllProjects();
         }
@@ -70,10 +69,41 @@ public class ProjectController {
         }
     }
 
+    // Tasks
+
     @PostMapping("/{id}/tasks")
     public ResponseEntity<Task> createProjectTask(@PathVariable Long id, @RequestBody TaskCreationDTO taskCreationDTO) {
-        System.out.println(id);
         Task createdTask = projectService.createProjectTask(id, taskCreationDTO);
         return new ResponseEntity<>(createdTask, (createdTask != null ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST));
     }
+
+    @GetMapping("/{id}/tasks")
+    public ResponseEntity<List<Task>> getProjectTasks(@PathVariable Long id, @RequestParam(required = false, name = "search") String searchQuery) {
+        List<Task> tasks;
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            tasks = projectService.findProjectTasksByName(id, searchQuery);;
+        } else {
+            tasks = projectService.getAllProjectTasks(id);
+        }
+        return new ResponseEntity<>(tasks, (tasks.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.FOUND));
+    }
+
+    @DeleteMapping("/{id}/tasks/{taskID}")
+    public ResponseEntity<Void> deleteProjectTaskByID(@PathVariable Long id, @PathVariable Long taskID) {
+        if (projectService.deleteProjectTask(id, taskID)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/{id}/tasks/{taskID}")
+    public ResponseEntity<Task> updateProjectTaskByID(@PathVariable Long id, @PathVariable Long taskID, @RequestBody Task task) {
+        Task updatedTask = projectService.updateProjectTask(id, taskID, task);
+        if (updatedTask != null) {
+            return new ResponseEntity<>(updatedTask, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
 }

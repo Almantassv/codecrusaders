@@ -12,17 +12,18 @@
   }
   
   .project-list {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     grid-gap: 1.5rem;
   }
   
   .project-preview {
-    background-color: #ffffff;
+    background-color: #E4DBFE;
     border-radius: 0.5rem;
     padding: 1.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    
+    width: 430px;
   }
 
   .project-preview:hover {
@@ -57,7 +58,7 @@
   
   .action-btn {
     background-color: #8b5cf6;
-    color: #fff;
+    /* color: #fff; */
     border: none;
     padding: 0.5rem;
     margin-left: 0.5rem;

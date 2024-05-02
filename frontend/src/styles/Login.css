@@ -13,6 +13,11 @@ body {
     background: linear-gradient(90deg, #7359FB 0%, #E147AB 100%)
 }
 
+.content{
+    display: flex;
+    justify-content: center;
+}
+
 .wrapper {
     width: 420px;
     background: rgba(255, 255, 255, 0.8);
@@ -45,11 +50,11 @@ body {
     border-radius: 15px;
     padding-left: 10px;
     padding-right: 10px;
-    color: #3C257C;
+    color: #00000080;
 }
 
 .input-box input::placeholder {
-    color: #3C257C;
+    color: #00000080;
 }
 
 .wrapper .btn {
@@ -62,37 +67,48 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, .1);
     cursor: pointer;
     font-size: 20px;
-    background-color: #3C257C;
+    background-color: #7749F8;
     color: #fff;
     font-weight: 600;
 }
 
-.wrapper .register-link {
-    font-size: 14.5px;
+.wrapper label {
+ color: #000000;
+     font-size: small;
+     font-weight: bold;
+     display: block;
+     margin-bottom: -25px;
+ }
+
+ .register-link {
+    font-size: 14px;
     text-align: center;
-    margin: 20px 0 15px;
+    margin: 20px 0 0;
 }
-
-   .wrapper label {
-    color: #3C257C;
-        font-size: small;
-        font-weight: bold;
-        display: block;
-        margin-bottom: -25px;
-      }
-
+ 
 .register-link p a {
-    color: #3C257C;
+    color: #000000;
     text-decoration: none;
     font-weight: 600;
 }
 
 .register-link p a:hover {
     text-decoration: underline;
-
 }
 
 .login-link {
-    margin-top: 5%;
+    font-size: 14px;
     text-align: center;
+    margin: 20px 0 0;
 }
+
+.login-link p a {
+    color: #000000;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-link p a:hover {
+    text-decoration: underline;
+}
+

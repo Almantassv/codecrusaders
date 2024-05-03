@@ -14,6 +14,7 @@ import Home from "./components/pages/projectsDashboard/Home";
 import './styles/ProjectList.css';
 import './styles/Navbar.css';
 import './styles/Login.css';
+import './styles/Create.css';
 
 function App() {
 

@@ -1,0 +1,26 @@
+
+.create form{
+    border: 3px;
+    border-style: solid;
+    border-radius: 10px;
+    border-color: #5333AE;
+    padding: 30px 20px;
+    margin-top: 20px;
+    background-color: #E4DBFE;
+}
+.create label:nth-child(3){
+    margin-left: 30px;
+}
+.create button{
+    margin-left: 30px;
+    color: white;
+    background-color: #7749F8;
+    border-style: none;
+    border-radius: 10px;
+    padding: 5px;
+    cursor: pointer;
+
+}
+.create button:hover{
+
+}

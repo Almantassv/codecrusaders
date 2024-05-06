@@ -1,5 +1,6 @@
 .projects-container {
     background-color: #262774;
+    margin-top: 100px;
     padding: 2rem;
     border-radius: 0.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -13,9 +14,10 @@
   
   .project-list {
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     grid-gap: 1.5rem;
+    overflow-x: auto;
   }
   
   .project-preview {

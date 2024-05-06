@@ -6,14 +6,34 @@
   font-family: "Quicksand";
   color: #000000;
 }
-.navbar {
+/* .navbar {
   position: static;
   padding: 20px;
   display: flex;
   align-items: center;
-  /* margin: 0 auto; */
   border-bottom: 1px solid #ffffff;
+} */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; /* Ensures the navbar spans the entire width of the page */
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  background-color: transparent; /* Optionally, add a background color to make it stand out */
+  z-index: 1000; /* Ensure it stays on top of other elements */
+  border-bottom: 1px solid #f2f2f2;
 }
+
+.user-name {
+  background-color: #E4DBFE;
+  border-radius: 20px;
+  margin-left: 10px;
+  padding: 15px;
+}
+
 .navbar h1 {
   color: #000000;
 }

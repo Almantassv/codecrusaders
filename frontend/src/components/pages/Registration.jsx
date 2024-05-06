@@ -13,6 +13,7 @@ const Registration = () => {
 
 
     const [showPassword, setShowPassword] = useState(false);
+    const [registerError, setRegisterError] = useState({ badUsername: '', badEmail: '', badPassword: '' });
     const navigate = useNavigate(); // Use useNavigate hook to navigate
 
     // Function to handle changes in input fields
@@ -27,11 +28,11 @@ const Registration = () => {
         e.preventDefault();
 
         if (formData.password !== formData.confirmPassword) {
-            alert('Passwords do not match');
+            setRegisterError({badPassword: 'Passwords do not match'})
             return;
         }
         if (formData.username.trim() === '') {
-            alert('Username cannot be empty');
+            setRegisterError({badUsername: 'Username cannot be empty'})
             return;
         }
         
@@ -39,9 +40,8 @@ const Registration = () => {
               await axios.post('http://localhost:8080/api/register', formData);
               navigate('/login');
             } catch (error) {
-                alert(error.response.data.message);
               console.error('Error:', error);
-              alert('Registration failed. Please check your input and try again.');
+              setRegisterError({badUsername: error.response.data.message})
             }
           };
     
@@ -50,33 +50,38 @@ const Registration = () => {
         <div className="wrapper">
             <h2>Registration</h2>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="username">Username </label>
+                <label htmlFor="username">Username <span className="error-message">{registerError.badUsername}</span></label>
                 <div className="input-box">
                     <input
+                        className={registerError.badUsername ? "bad-input" : ""}
                         type="text"
                         id="username"
                         name="username"
                         placeholder='Enter your username'
                         value={formData.username}
                         onChange={handleChange}
+                        required
                     />
                 </div>
 
-                <label htmlFor="email">Email </label>
+                <label htmlFor="email">Email <span className="error-message">{registerError.badEmail}</span></label>
                 <div className="input-box">
                     <input
+                        className={registerError.badEmail ? "bad-input" : ""}
                         type="text"
                         id="email"
                         name="email"
                         placeholder='Enter your email'
                         value={formData.email}
                         onChange={handleChange}
+                        required
                     />
                 </div>
 
-                <label htmlFor="password">Password </label>
+                <label htmlFor="password">Password <span className="error-message">{registerError.badPassword}</span></label>
                 <div className="input-box">
                     <input
+                        className={registerError.badPassword ? "bad-input" : ""}
                         type={showPassword ? 'text' : 'password'}
                         id="password"
                         name="password"

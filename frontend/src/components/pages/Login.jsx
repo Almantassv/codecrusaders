@@ -8,6 +8,7 @@ const Login = () => {
     const [formData, setFormData] = useState({ username: '', password: '' });
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
+    const [loginError, setLoginError] = useState({ badUsername: '', badPassword: '' });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -28,7 +29,7 @@ const Login = () => {
             navigate('/dashboard');
         } catch (error) {
             console.log('Error:' + error);
-            alert('Invalid username or password');
+            setLoginError({badUsername: 'Invalid username or password', badPassword: ''})
         }
     };
 
@@ -40,20 +41,23 @@ const Login = () => {
         <div className="wrapper">
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username">Username <span className="error-message">{loginError.badUsername}</span></label>
                 <div className="input-box">
                     <input
+                        className={loginError.badUsername ? "bad-input" : ""}
                         type="text"
                         id="username"
                         name="username"
                         placeholder="Enter your username"
                         value={formData.username}
                         onChange={handleChange}
+                        required
                     />
                 </div>
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">Password <span className="error-message">{loginError.badPassword}</span></label>
                 <div className="input-box">
                     <input
+                        className={loginError.badPassword ? "bad-input" : ""}
                         type={showPassword ? 'text' : 'password'}
                         id="password"
                         name="password"

@@ -30,6 +30,18 @@ const ProjectList = ({ projects }) => {
     setShowModal(false);
   };
 
+    // Function to export projects to CSV
+    const exportToCSV = () => {
+      const csvContent = "data:text/csv;charset=utf-8," +
+        projects.map(project => `${project.id},${project.name},${project.description},${project.status},${project.totalTasks},${project.completedTasks}`).join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "projects.csv");
+      document.body.appendChild(link);
+      link.click();
+    };
+
   return (
     <div className="projects-container">
       <h1 className="projects-title">Projects</h1>
@@ -58,6 +70,9 @@ const ProjectList = ({ projects }) => {
             </Link>
           </div>
         ))}
+      </div>
+      <div>
+        <button className='action-btn' onClick={exportToCSV}>Export to CSV</button>
       </div>
       <Link to="/create">
         <button className="new-project-btn">+ New Project</button>

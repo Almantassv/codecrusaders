@@ -29,7 +29,7 @@
   }
 
   .project-preview:hover {
-    transform: scale(1.01); /* Apply the hover effect by scaling the card */
+    transform: scale(1.0); /* Apply the hover effect by scaling the card */
   }
   
   .project-preview a {

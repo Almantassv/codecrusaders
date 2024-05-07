@@ -15,6 +15,8 @@ import './styles/ProjectList.css';
 import './styles/Navbar.css';
 import './styles/Login.css';
 import './styles/Create.css';
+import './styles/TaskBoard.css';
+import CreateTask from './components/pages/tasksDashboard/CreateTask';
 
 function App() {
 
@@ -34,6 +36,7 @@ function App() {
             <Route path="/create" element={<PrivateRoute roles={['User']}><Create /></PrivateRoute>} />
             <Route path="/projects/:id" element={<PrivateRoute roles={['User']}><ProjectDetails /></PrivateRoute>} />
             <Route path="/projects/:id/edit" element={<PrivateRoute roles={['User']}><EditProject /></PrivateRoute>} />
+            <Route path="/projects/:id/create-task" element={<PrivateRoute roles={['User']}><CreateTask /></PrivateRoute>} />
           </Routes>
           </div>
         </div>

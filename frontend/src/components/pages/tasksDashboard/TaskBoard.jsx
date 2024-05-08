@@ -28,32 +28,17 @@ const TaskBoard = ({ projectId, onProjectStatusChange }) => {
     }
   };
 
-  const handleUpdateTaskStatus = async (taskId, newStatus) => {
-    try {
-      await axiosInstance.put(`/${projectId}/tasks/${taskId}`, { status: newStatus });
-      fetchTasks();
-      // Update project status here
-      const statuses = tasks.map(task => task.status);
-      if (statuses.includes('TODO') || statuses.includes('IN_PROGRESS')) {
-        onProjectStatusChange('IN_PROGRESS');
-      } else {
-        onProjectStatusChange('DONE');
-      }
-    } catch (error) {
-      console.error('Error updating task status:', error);
-    }
-  };
-
-  const handleDragStart = (e, taskId) => {
-    e.dataTransfer.setData('taskId', taskId);
+  const handleDragStart = (e, task) => {
+    e.dataTransfer.setData('task', JSON.stringify(task));
   };
 
   const handleDrop = async (e, status) => {
-    const taskId = e.dataTransfer.getData('taskId');
+    var task = JSON.parse(e.dataTransfer.getData('task'));
     try {
+      task.status = status;
       const response = await axios.put(
-        `http://localhost:8080/api/projects/${projectId}/tasks/${taskId}`,
-        { status },
+        `http://localhost:8080/api/projects/${projectId}/tasks/${task.id}`,
+        task,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -70,7 +55,9 @@ const TaskBoard = ({ projectId, onProjectStatusChange }) => {
     return tasks
       .filter((task) => task.status === status)
       .map((task) => (
-        <li key={task.id} draggable onDragStart={(e) => handleDragStart(e, task.id)}>
+        <li key={task.id} draggable onDragStart={(e) => {
+          handleDragStart(e, task)
+        }}>
           {task.status}
         </li>
       ));

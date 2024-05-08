@@ -56,7 +56,7 @@ const Login = () => {
                     />
                     <span className="error-message">{loginError.badUsername}</span>
                 </div>
-                <label htmlFor="password">Password</label>
+            <label htmlFor="password">Password</label>
                 <div className="input-box">
                     <input
                     className={loginError.badPassword ? "bad-input" : ""}
@@ -68,6 +68,9 @@ const Login = () => {
                         onChange={handleChange}
                         required
                     />
+                    <button className="show-hide" type="button" onClick={togglePasswordVisibility}>
+                    {showPassword ? "Hide Password" : "Show Password"}
+                    </button>
                     <span className="error-message">{loginError.badPassword}</span>
                 </div>
                 <button type="submit" className="btn">Log In</button>

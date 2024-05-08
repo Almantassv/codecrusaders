@@ -1,5 +1,5 @@
 .projects-container {
-    background-color: #262774;
+    background-color: #3e40b6;
     margin-top: 100px;
     padding: 2rem;
     border-radius: 0.5rem;
@@ -61,14 +61,19 @@
     justify-content: flex-end;
   }
   
-  .action-btn {
-    background-color: #8b5cf6;
-    /* color: #fff; */
+  .export-btn {
+    background-color: #3b256e;
+    color: #fff;
     border: none;
     padding: 0.5rem;
-    margin-left: 0.5rem;
+    margin-right: 0.5rem;
     cursor: pointer;
     border-radius: 0.25rem;
+  }
+
+  .export-btn:hover {
+    transform: scale(0.95);
+    transition-duration: 0.1s;
   }
 
 
@@ -79,7 +84,6 @@
   
   
   .new-project-btn {
-    margin-top: 2rem;
     background-color: #8b5cf6;
     color: #fff;
     border: none;
@@ -87,4 +91,10 @@
     cursor: pointer;
     border-radius: 0.25rem;
     font-size: 1rem;
+  }
+
+  .projects-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
   }

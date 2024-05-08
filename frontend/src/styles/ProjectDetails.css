@@ -1,8 +1,8 @@
 .project-details {
   display: flex;
   flex-direction:column;
-  align-items: center;
-  margin-top: 50px; /* Adjust as needed */
+  align-items: end;
+  margin-top: 40px; 
 }
 
 .project-details article {

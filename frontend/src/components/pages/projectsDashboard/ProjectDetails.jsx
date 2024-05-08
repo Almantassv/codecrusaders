@@ -59,6 +59,19 @@ const ProjectDetails = () => {
     }
   };
 
+  const handleClick = async () => {
+    try {
+      await axios.delete(`http://localhost:8080/api/projects/${project.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      navigate("/list");
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   const handleProjectStatusChange = async (newStatus) => {
     try {
       await axios.put(
@@ -123,7 +136,7 @@ const ProjectDetails = () => {
               <div className="modal-content">
                 <p>Are you sure you want to delete this project?</p>
                 <div>
-                  <button onClick={handleClickDelete}>Yes</button>
+                  <button onClick={handleClick}>Yes</button>
                   <button onClick={() => setShowModal(false)}>No</button>
                 </div>
               </div>

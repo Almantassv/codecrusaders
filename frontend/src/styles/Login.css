@@ -53,6 +53,19 @@ body {
     color: #00000080;
 }
 
+.input-box .bad-input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid;
+    border-radius: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #ff0000;
+}
+
 .input-box input::placeholder {
     color: #00000080;
 }
@@ -112,18 +125,6 @@ body {
     text-decoration: underline;
 }
 
-.bad-input {
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    border: 2px solid;
-    border-radius: 15px;
-    padding-left: 10px;
-    padding-right: 10px;
-    color: #ff0000;
-}
 
 .error-message {
     color: #ff0000;

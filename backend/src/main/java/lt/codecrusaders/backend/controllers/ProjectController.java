@@ -34,7 +34,7 @@ public class ProjectController {
         } else {
             projects = projectService.getAllProjects();
         }
-        return new ResponseEntity<>(projects, (projects.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.FOUND));
+        return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
     @PostMapping
@@ -85,7 +85,7 @@ public class ProjectController {
         } else {
             tasks = projectService.getAllProjectTasks(id);
         }
-        return new ResponseEntity<>(tasks, (tasks.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.FOUND));
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}/tasks/{taskID}")

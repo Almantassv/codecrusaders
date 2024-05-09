@@ -49,7 +49,7 @@ const EditProject = () => {
   return (
     <div className="create">
       <h2>Edit Project</h2>
-      <form onSubmit={handleSubmit}>
+      <form className="form-container" onSubmit={handleSubmit}>
         <label>Project Name *</label>
         <input
           value={name}

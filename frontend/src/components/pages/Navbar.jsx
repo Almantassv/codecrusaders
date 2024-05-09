@@ -4,7 +4,7 @@ import { useAuth } from "../../services/AuthContext";
 import "../../styles/Navbar.css";
 
 const Navbar = () => {
-  const { token, logoutUser } = useAuth(); // Access token and logoutUser method from AuthContext
+  const { token, user, logoutUser } = useAuth(); // Access token and logoutUser method from AuthContext
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -21,6 +21,7 @@ const Navbar = () => {
           <>
             <Link to="/list">All Projects</Link>
             <Link to="/create">New Project</Link>
+            <span className="user-name">{user.name}</span>
             <button onClick={handleLogout}>Logout</button>
           </>
         )}

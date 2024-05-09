@@ -30,52 +30,86 @@ const ProjectList = ({ projects }) => {
     setShowModal(false);
   };
 
-  return (
-    <div className="projects-container">
-      <h1 className="projects-title">Projects</h1>
-      <div className="project-list">
-        {projects.map(project => (
-          <div className="project-preview" key={project.id}>
-            <Link to={`/projects/${project.id}`}>
-              <h3>{project.name}</h3>
-              <p>{project.description}</p>
-              <p>Status: {project.status}</p>
-              <div className="project-details">
-                <p>Total tasks: {project.totalTasks}</p>
-                <p>Completed tasks: {project.completedTasks}</p>
-              </div>
-              {/* If you want to conditionally render edit and delete buttons based on user authentication */}
-              {token && (
-                <div className="project-actions">
-                  <button className="action-btn">
-                    <img src={editIcon} alt="Edit Icon" />
-                  </button>
-                  <button className="action-btn" onClick={() => { setShowModal(true); setProjectIdToDelete(project.id); }}>
-                    <img src={deleteIcon} alt="Delete Icon" />
-                  </button>
-                </div>
-              )}
-            </Link>
-          </div>
-        ))}
-      </div>
-      <Link to="/create">
-        <button className="new-project-btn">+ New Project</button>
-      </Link>
-      {/* Confirmation modal */}
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <p>Are you sure you want to delete this project?</p>
-            <div>
-              <button onClick={handleDelete}>Yes</button>
-              <button onClick={() => setShowModal(false)}>No</button>
-            </div>
+    // Function to export projects to CSV
+    const exportToCSV = () => {
+      const csvContent = "data:text/csv;charset=utf-8," +
+        projects.map(project => `${project.id},${project.name},${project.description},${project.status},${project.totalTasks},${project.completedTasks}`).join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "projects.csv");
+      document.body.appendChild(link);
+      link.click();
+    };
+
+    const calculateTasks = (projectId) => {
+      const project = projects.find(project => project.id === projectId);
+      if (project) {
+        const totalTasks = project.tasks.length;
+        const completedTasks = project.tasks.filter(task => task.status).length;
+        return { totalTasks, completedTasks };
+      }
+      return { totalTasks: 0, completedTasks: 0 };
+    };
+  
+    return (
+      <div className="projects-container">
+        <div className='projects-header'>
+          <h1 className="projects-title">Projects</h1>
+          <h1>SEARCH BAR</h1>
+          <div className='button-group'>
+          <button className='export-btn' onClick={exportToCSV}>Export projects to CSV</button>
+          <Link to="/create">
+            <button className="new-project-btn">+ New Project</button>
+          </Link>
           </div>
         </div>
-      )}
-    </div>
-  );
-}
-
-export default ProjectList;
+        <div className="project-list">
+          {projects.map(project => {
+            const { totalTasks, completedTasks } = calculateTasks(project.id);
+            return (
+              <div className="project-preview" key={project.id}>
+                <Link to={`/projects/${project.id}`}>
+                  <h3>{project.name}</h3>
+                  <p>{project.description}</p>
+                  <p>Status: {project.status}</p>
+                  <div className="project-details">
+                    <p>Total tasks: {totalTasks}</p>
+                    <p>Completed tasks: {completedTasks}</p>
+                  </div>
+                  {/* If you want to conditionally render edit and delete buttons based on user authentication */}
+                  {/* {token && (
+                    <div className="project-actions">
+                      <button className="action-btn">
+                        <img src={editIcon} alt="Edit Icon" />
+                      </button>
+                      <button className="action-btn" onClick={() => { setShowModal(true); setProjectIdToDelete(project.id); }}>
+                        <img src={deleteIcon} alt="Delete Icon" />
+                      </button>
+                    </div>
+                  )} */}
+                </Link>
+              </div>
+            );
+          })}
+        </div>
+        {/* <Link to="/create">
+          <button className="new-project-btn">+ New Project</button>
+        </Link> */}
+        {/* Confirmation modal */}
+        {showModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <p>Are you sure you want to delete this project?</p>
+              <div>
+                <button onClick={handleDelete}>Yes</button>
+                <button onClick={() => setShowModal(false)}>No</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+  
+  export default ProjectList;

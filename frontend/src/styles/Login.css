@@ -125,8 +125,16 @@ body {
     text-decoration: underline;
 }
 
+
 .error-message {
     color: #ff0000;
     font-weight: 600;
     font-size: 12px;
+}
+
+.show-hide {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #7749F8;
 }

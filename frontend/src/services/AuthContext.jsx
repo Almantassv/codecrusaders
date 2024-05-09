@@ -18,7 +18,7 @@ export const AuthProvider = ({children}) => {
         const token = localStorage.getItem('token');
         console.log('Token from localStorage:', token);
         if (token) {
-          const user = jwtDecode(token);
+
           let currentDate = new Date();
           if (user.exp * 1000 < currentDate.getTime()) {
             console.log('Token expired');

@@ -12,7 +12,7 @@ const Create = () => {
  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const project = { name, description, priority };
+    const project = { name, description };
  
     try {
       const response = await axios.post('http://localhost:8080/api/projects', project, {
@@ -34,7 +34,7 @@ const Create = () => {
   return (
     <div className="create">
       <h1>Create New Project</h1>
-      <form onSubmit={handleSubmit}>
+      <form className="form-container" onSubmit={handleSubmit}>
         <label>Project Name: </label>
         <input
           value={name}
@@ -50,7 +50,7 @@ const Create = () => {
           onChange={(e) => setDescription(e.target.value)}
         >
         </textarea>
-        <button type="submit">Create Project</button>
+        <button type="submit" onClick={handleSubmit}>Create Project</button>
         <button type="button" onClick={handleCancel}>Cancel</button>
       </form>
     </div>

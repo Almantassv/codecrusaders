@@ -1,3 +1,21 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 420px;
+}
+
+.form-container label {
+    margin-bottom: 8px;
+  }
+  
+  .form-container input,
+  .form-container textarea {
+    margin-bottom: 16px; 
+  }
+  
+  .form-container button {
+    margin-top: 16px; 
+  }
 
 .create form{
     border: 3px;
@@ -9,10 +27,10 @@
     background-color: #E4DBFE;
 }
 .create label:nth-child(3){
-    margin-left: 30px;
+    margin-left: 0px;
 }
 .create button{
-    margin-left: 30px;
+    margin-left: 0px;
     color: white;
     background-color: #7749F8;
     border-style: none;

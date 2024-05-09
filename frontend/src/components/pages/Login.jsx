@@ -41,7 +41,7 @@ const Login = () => {
         <div className="wrapper">
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="username">Username <span className="error-message">{loginError.badUsername}</span></label>
+                <label htmlFor="username">Username</label>
                 <div className="input-box">
                     <input
                         className={loginError.badUsername ? "bad-input" : ""}
@@ -53,11 +53,12 @@ const Login = () => {
                         onChange={handleChange}
                         required
                     />
+                    <span className="error-message">{loginError.badUsername}</span>
                 </div>
-                <label htmlFor="password">Password <span className="error-message">{loginError.badPassword}</span></label>
+                <label htmlFor="password">Password</label>
                 <div className="input-box">
                     <input
-                        className={loginError.badPassword ? "bad-input" : ""}
+                        className={loginError.badUsername ? "bad-input" : ""}
                         type={showPassword ? 'text' : 'password'}
                         id="password"
                         name="password"
@@ -66,6 +67,7 @@ const Login = () => {
                         onChange={handleChange}
                         required
                     />
+                    <span className="error-message">{loginError.badPassword}</span>
                 </div>
                 <button type="submit" className="btn">Log In</button>
                 <div className="register-link">

@@ -35,13 +35,37 @@ const Registration = () => {
             setRegisterError({badUsername: 'Username cannot be empty'})
             return;
         }
+        if (formData.password.trim() === '') {
+            setRegisterError({badPassword: 'Password cannot be empty'})
+            return;
+        }
+        if (formData.email.trim() === '') {
+            setRegisterError({badEmail: 'Email cannot be empty'})
+            return;
+        }
+        if (formData.confirmPassword.trim() === '') {
+            setRegisterError({badPassword: 'Confirm Password cannot be empty'})
+            return;
+        }
         
             try {
               await axios.post('http://localhost:8080/api/register', formData);
               navigate('/login');
             } catch (error) {
               console.error('Error:', error);
-              setRegisterError({badUsername: error.response.data.message});
+              const registerError = error.response.data.message.toLowerCase();
+              if (registerError.includes("username")) {
+                setRegisterError({badUsername: error.response.data.message})
+              }
+              else if (registerError.includes("password")) {
+                setRegisterError({badPassword: error.response.data.message})
+              }
+              else if (registerError.includes("email")) {
+                setRegisterError({badEmail: error.response.data.message})
+              }
+              else {
+                setRegisterError({badUsername: error.response.data.message})
+              }
             }
           };
     
@@ -50,7 +74,7 @@ const Registration = () => {
         <div className="wrapper">
             <h2>Registration</h2>
             <form onSubmit={handleSubmit}>
-            <label htmlFor="username">Username <span className="error-message">{registerError.badUsername}</span></label>
+                <label htmlFor="username">Username</label>
                 <div className="input-box">
                     <input
                         className={registerError.badUsername ? "bad-input" : ""}
@@ -62,9 +86,10 @@ const Registration = () => {
                         onChange={handleChange}
                         required
                     />
+                    <span className="error-message">{registerError.badUsername}</span>
                 </div>
 
-                <label htmlFor="email">Email <span className="error-message">{registerError.badEmail}</span></label>
+                <label htmlFor="email">Email</label>
                 <div className="input-box">
                     <input
                         className={registerError.badEmail ? "bad-input" : ""}
@@ -76,9 +101,10 @@ const Registration = () => {
                         onChange={handleChange}
                         required
                     />
+                    <span className="error-message">{registerError.badEmail}</span>
                 </div>
 
-                <label htmlFor="password">Password <span className="error-message">{registerError.badPassword}</span></label>
+                <label htmlFor="password">Password</label>
                 <div className="input-box">
                     <input
                         className={registerError.badPassword ? "bad-input" : ""}
@@ -90,11 +116,13 @@ const Registration = () => {
                         onChange={handleChange}
                         required
                     />
+                    <span className="error-message">{registerError.badPassword}</span>
                 </div>
 
                 <label htmlFor="confirmPassword">Confirm Password </label>
                 <div className="input-box">
                     <input
+                        className={registerError.badPassword ? "bad-input" : ""}
                         type={showPassword ? 'text' : 'password'}
                         id="confirmPassword"
                         name="confirmPassword"

@@ -26,7 +26,7 @@ const Login = () => {
             console.log("Response: " + response.data.token);
             const { token } = response.data;
             authContext.loginUser(token);
-            navigate('/list');
+            navigate('/dashboard');
         } catch (error) {
             console.log('Error:' + error);
             setLoginError({badUsername: 'Invalid username or password', badPassword: ''})
@@ -41,8 +41,7 @@ const Login = () => {
         <div className="wrapper">
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
-
-            <label htmlFor="username">Username</label>
+                <label htmlFor="username">Username</label>
                 <div className="input-box">
                     <input
                         className={loginError.badUsername ? "bad-input" : ""}
@@ -56,10 +55,10 @@ const Login = () => {
                     />
                     <span className="error-message">{loginError.badUsername}</span>
                 </div>
-            <label htmlFor="password">Password</label>
+                <label htmlFor="password">Password</label>
                 <div className="input-box">
                     <input
-                    className={loginError.badPassword ? "bad-input" : ""}
+                        className={loginError.badUsername ? "bad-input" : ""}
                         type={showPassword ? 'text' : 'password'}
                         id="password"
                         name="password"
@@ -68,9 +67,6 @@ const Login = () => {
                         onChange={handleChange}
                         required
                     />
-                    <button className="show-hide" type="button" onClick={togglePasswordVisibility}>
-                    {showPassword ? "Hide Password" : "Show Password"}
-                    </button>
                     <span className="error-message">{loginError.badPassword}</span>
                 </div>
                 <button type="submit" className="btn">Log In</button>

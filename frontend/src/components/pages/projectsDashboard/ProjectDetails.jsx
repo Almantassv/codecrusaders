@@ -7,6 +7,10 @@ import axios from "axios";
 import "../../../styles/ProjectDetails.css";
 import TaskBoard from "../tasksDashboard/TaskBoard";
 
+import done from '../../../assets/done.png';
+import in_progress from '../../../assets/in_progress.png';
+import todo from '../../../assets/todo.png';
+
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -21,6 +25,7 @@ const ProjectDetails = () => {
   const [tasksError, setTasksError] = useState(null);
   const [tasksIsPending, setTasksIsPending] = useState(true);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -59,19 +64,6 @@ const ProjectDetails = () => {
     }
   };
 
-  const handleClick = async () => {
-    try {
-      await axios.delete(`http://localhost:8080/api/projects/${project.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      navigate("/list");
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
   const handleProjectStatusChange = async (newStatus) => {
     try {
       await axios.put(
@@ -90,6 +82,38 @@ const ProjectDetails = () => {
   };
 
 
+  const statusIcons = {
+    TODO: todo,
+    IN_PROGRESS: in_progress,
+    DONE: done
+  };
+
+  const [editingTask, setEditingTask] = useState(null);
+
+  const handleEditTask = async (updatedTask) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/api/projects/${id}/tasks/${updatedTask.id}`,
+        updatedTask,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setTasks(tasks.map((task) => (task.id === updatedTask.id ? response.data : task)));
+      setEditingTask(null);
+    } catch (error) {
+      console.error('Error updating task:', error);
+      alert('Failed to update task. Please try again.');
+    }
+  };
+
+  // Filter tasks based on search query
+  const filteredTasks = tasks.filter(task =>
+    task.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="project-details">
       {isPending && <div>Loading...</div>}
@@ -101,22 +125,88 @@ const ProjectDetails = () => {
           <h3>Status: {project.status}</h3>
           <h3>Members: </h3>
           <h3>Tasks: </h3>
-          <ul className="task-list">
-  {tasks.map((task) => (
-    <li className="task-item" key={task.id}>
-      <div className="task-name">{task.name}</div>
-      <div className="task-description">Description: {task.description}</div>
-      <div>Priority: {task.priority}</div>
-      <div>Status: {(task.status)}</div>
-      <div className="task-controls">
-        <button onClick={() => setSelectedTaskId(task.id)}>Delete</button>
-      </div>
-    </li>
-  ))}
-</ul>
+          {/* Search Bar */}
+          <input
+            type="text"
+            placeholder="Search tasks"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
           {selectedTaskId && (
-            <button onClick={handleClickDelete}>Confirm Delete</button>
+            <button className="confirm-delete-button-red" onClick={handleClickDelete}>Confirm Delete</button>
           )}
+          <ul className="task-list">
+            {filteredTasks.map((task) => (
+              <div className={`task-item task-priority-${task.priority.toLowerCase()}`} key={task.id}>
+                <div className="task-header">
+                  <div className="task-name">{task.name}</div>
+                  {/* Render SVG image based on task status */}
+                  <div className="task-status">
+                    <img src={statusIcons[task.status]} alt={task.status} />
+                  </div>
+                </div>
+                <div className="task-description">
+                  <span className="description-label">Description:</span> {task.description}
+                </div>
+                <div className="task-priority">
+                  <span className="priority-label">Priority:</span> {task.priority}
+                </div>
+                <div className="task-controls">
+                  <button className="delete-task-btn" onClick={() => setSelectedTaskId(task.id)}>
+                    <i className="fas fa-trash"></i> Delete
+                  </button>
+                  
+                  {editingTask === null || editingTask.id !== task.id ? (
+                    <button onClick={() => setEditingTask(task)}>Edit</button>
+                  ) : (
+                    <div>
+                      <label>Name: </label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={editingTask.name}
+                        onChange={(e) => setEditingTask({ ...editingTask, name: e.target.value })}
+                        required
+                      />
+                      <label>Description: </label>
+                      <input
+                        type="text"
+                        name="description"
+                        value={editingTask.description}
+                        onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
+                        required
+                      />
+                      <label>Priority: </label>
+                      <select
+                        name="priority"
+                        value={editingTask.priority}
+                        onChange={(e) => setEditingTask({ ...editingTask, priority: e.target.value })}
+                        required
+                      >
+                        <option value="HIGH">High</option>
+                        <option value="MEDIUM">Medium</option>
+                        <option value="LOW">Low</option>
+                      </select>
+                      <label>Status: </label>
+                      <select
+                        name="status"
+                        value={editingTask.status}
+                        onChange={(e) => setEditingTask({ ...editingTask, status: e.target.value })}
+                        required
+                      >
+                        <option value="TODO">To Do</option>
+                        <option value="IN_PROGRESS">In Progress</option>
+                        <option value="DONE">Done</option>
+                      </select>
+                      <button onClick={() => handleEditTask(editingTask)}>Save</button>
+                      <button onClick={() => setEditingTask(null)}>Cancel</button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </ul>
+          
 
           <button onClick={() => setShowTaskBoard(!showTaskBoard)}>
             {showTaskBoard ? "Hide Task Board" : "Show Task Board"}
@@ -136,7 +226,7 @@ const ProjectDetails = () => {
               <div className="modal-content">
                 <p>Are you sure you want to delete this project?</p>
                 <div>
-                  <button onClick={handleClick}>Yes</button>
+                  <button onClick={handleClickDelete}>Yes</button>
                   <button onClick={() => setShowModal(false)}>No</button>
                 </div>
               </div>
@@ -149,3 +239,4 @@ const ProjectDetails = () => {
 };
 
 export default ProjectDetails;
+

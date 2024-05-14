@@ -66,7 +66,11 @@ const Login = () => {
                         value={formData.password}
                         onChange={handleChange}
                         required
+                        
                     />
+                    <button className="show-hide" type="button" onClick={togglePasswordVisibility} style={{ position: 'absolute', right: '50px', top: '60%', transform: 'translateY(-50%)' }}>
+                {showPassword ? "Hide" : "Show"}
+                </button>
                     <span className="error-message">{loginError.badPassword}</span>
                 </div>
                 <button type="submit" className="btn">Log In</button>

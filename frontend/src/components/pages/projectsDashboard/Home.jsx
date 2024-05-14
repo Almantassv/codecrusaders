@@ -2,6 +2,7 @@ import React from 'react';
 import ProjectList from "./ProjectList";
 import useFetch from "../../../services/useFetch";
 import { useAuth } from '../../../services/AuthContext';
+import "../../../styles/Home.css";
 
 const Home = () => {
   const { token } = useAuth(); // Access token from AuthContext

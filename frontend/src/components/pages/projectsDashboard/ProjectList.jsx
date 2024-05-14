@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../../services/AuthContext';
 import '../../../styles/ProjectList.css';
-import editIcon from '../../../assets/edit.svg';
-import deleteIcon from '../../../assets/delete.svg';
 import axios from 'axios';
+import SearchBar from '../SearchBar';
 
 const ProjectList = ({ projects }) => {
   const { token } = useAuth(); // Access token from AuthContext
@@ -46,7 +45,7 @@ const ProjectList = ({ projects }) => {
       const project = projects.find(project => project.id === projectId);
       if (project) {
         const totalTasks = project.tasks.length;
-        const completedTasks = project.tasks.filter(task => task.status).length;
+        const completedTasks = project.tasks.filter(task => task.status === "DONE").length;
         return { totalTasks, completedTasks };
       }
       return { totalTasks: 0, completedTasks: 0 };
@@ -56,7 +55,7 @@ const ProjectList = ({ projects }) => {
       <div className="projects-container">
         <div className='projects-header'>
           <h1 className="projects-title">Projects</h1>
-          <h1>SEARCH BAR</h1>
+          <SearchBar />
           <div className='button-group'>
           <button className='export-btn' onClick={exportToCSV}>Export projects to CSV</button>
           <Link to="/create">

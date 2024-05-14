@@ -26,7 +26,7 @@ const Login = () => {
             console.log("Response: " + response.data.token);
             const { token } = response.data;
             authContext.loginUser(token);
-            navigate('/dashboard');
+            navigate('/');
         } catch (error) {
             console.log('Error:' + error);
             setLoginError({badUsername: 'Invalid username or password', badPassword: ''})
@@ -67,6 +67,9 @@ const Login = () => {
                         onChange={handleChange}
                         required
                     />
+                    <button className="show-hide" type="button" onClick={togglePasswordVisibility}>
+    {showPassword ? "Hide Password" : "Show Password"}
+</button>
                     <span className="error-message">{loginError.badPassword}</span>
                 </div>
                 <button type="submit" className="btn">Log In</button>

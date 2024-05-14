@@ -1,0 +1,33 @@
+  .search-bar-container input {
+    background-color: #E4DBFE;
+    width: 400px;
+    height: 40px;
+    border-radius: 15px;
+    padding-left: 10px;
+    border: none;
+    outline: none;
+  }
+  
+  .search-input {
+    padding: 10px;
+    font-size: 16px;
+    width: 300px;
+    height: 50px; 
+    border-radius: 5px;
+    border: none;
+  }
+
+  .search-result {
+    margin: 10px;
+  }
+
+  .search-results-container {
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #E4DBFE;
+    margin-top: 10px;
+  }
+
+  .link-result {
+    text-decoration: none;
+  }

@@ -1,15 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 
 /* base styles */
 * {
   margin: 0;
-  font-family: "Quicksand";
+  font-family: "Montserrat";
   color: #ee0f0f;
 }
 
 .content {
-  /* max-width: 600px; */
+   
   margin: 40px auto; 
   padding: 20px;
   

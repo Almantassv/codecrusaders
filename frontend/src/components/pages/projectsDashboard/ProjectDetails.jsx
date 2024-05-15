@@ -108,6 +108,7 @@ const ProjectDetails = () => {
 
   return (
     <div className="project-details">
+      <button onClick={() => navigate(-1)}>Back</button>
       {isPending && <div>Loading...</div>}
       {error && <div>{error}</div>}
       {project && (
@@ -141,7 +142,7 @@ const ProjectDetails = () => {
 
           <button onClick={() => setShowModal(true)}>Delete Project</button>
           <Link to={`/projects/${project.id}/edit`}>
-            <button>Edit</button>
+            <button>Edit Project</button>
           </Link>
           <Link to={`/projects/${project.id}/create-task`}>
             <button>Create Task</button>

@@ -6,13 +6,12 @@ import axios from 'axios';
 import SearchBar from '../SearchBar';
 
 const ProjectList = ({ projects }) => {
-  const { token } = useAuth(); // Access token from AuthContext
+  const { token } = useAuth();
 
   // State to manage the confirmation modal
   const [showModal, setShowModal] = useState(false);
   const [projectIdToDelete, setProjectIdToDelete] = useState(null);
 
-  // Function to handle deletion of project
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:8080/api/projects/${projectIdToDelete}`, {
@@ -20,12 +19,9 @@ const ProjectList = ({ projects }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      // Optionally, you can update the project list after deletion
-      // For example, you can refetch the project list data here
     } catch (error) {
       console.error('Error:', error);
     }
-    // Close the modal after deletion
     setShowModal(false);
   };
 
@@ -45,11 +41,25 @@ const ProjectList = ({ projects }) => {
       const project = projects.find(project => project.id === projectId);
       if (project) {
         const totalTasks = project.tasks.length;
-        const completedTasks = project.tasks.filter(task => task.status === "DONE").length;
-        return { totalTasks, completedTasks };
+        const incompletedTasks = project.tasks.filter(task => task.status === "TODO", "IN_PROGRESS").length;
+        return { totalTasks, incompletedTasks };
       }
       return { totalTasks: 0, completedTasks: 0 };
     };
+
+     // Function to rename status values
+  const renameStatus = (originalStatus) => {
+    // Define mapping of original status values to renamed values
+    const statusMap = {
+      'TODO': 'To Do',
+      'IN_PROGRESS': 'In Progress',
+      'COMPLETED': 'Completed',
+      // Add more mappings as needed
+    };
+
+    // Return renamed status value if mapping exists, otherwise return the original status value
+    return statusMap[originalStatus] || originalStatus;
+  };
   
     return (
       <div className="projects-container">
@@ -65,28 +75,17 @@ const ProjectList = ({ projects }) => {
         </div>
         <div className="project-list">
           {projects.map(project => {
-            const { totalTasks, completedTasks } = calculateTasks(project.id);
+            const { totalTasks, incompletedTasks } = calculateTasks(project.id);
             return (
               <div className="project-preview" key={project.id}>
                 <Link to={`/projects/${project.id}`}>
                   <h3>{project.name}</h3>
                   <p>{project.description}</p>
-                  <p>Status: {project.status}</p>
+                  <p>Status: {renameStatus(project.status)}</p>
                   <div className="project-details">
                     <p>Total tasks: {totalTasks}</p>
-                    <p>Completed tasks: {completedTasks}</p>
+                    <p>Incomplete tasks: {incompletedTasks}</p>
                   </div>
-                  {/* If you want to conditionally render edit and delete buttons based on user authentication */}
-                  {/* {token && (
-                    <div className="project-actions">
-                      <button className="action-btn">
-                        <img src={editIcon} alt="Edit Icon" />
-                      </button>
-                      <button className="action-btn" onClick={() => { setShowModal(true); setProjectIdToDelete(project.id); }}>
-                        <img src={deleteIcon} alt="Delete Icon" />
-                      </button>
-                    </div>
-                  )} */}
                 </Link>
               </div>
             );

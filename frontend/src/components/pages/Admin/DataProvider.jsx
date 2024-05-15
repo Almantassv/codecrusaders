@@ -13,4 +13,3 @@ export const DataProvider = async (token) => {
     throw error;
   }
 };
- 

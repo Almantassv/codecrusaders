@@ -10,7 +10,7 @@ const EditProject = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('IN_PROGRESS');
-  const { token } = useAuth(); // Access token from AuthContext
+  const { token } = useAuth();
 
   useEffect(() => {
     const fetchProject = async () => {

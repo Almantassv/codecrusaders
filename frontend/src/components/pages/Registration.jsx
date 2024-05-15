@@ -69,7 +69,10 @@ const Registration = () => {
               }
             }
           };
-    
+
+          const togglePasswordVisibility = () => {
+            setShowPassword(!showPassword);
+        };
 
     return (
         <div className="wrapper">
@@ -105,7 +108,7 @@ const Registration = () => {
                     />
                     <span className="error-message">{registerError.badEmail}</span>
                 </div>
-
+                <button className='show-hide' type='button' onClick={togglePasswordVisibility} style={{ position: 'absolute', right: '50px', top: '56.5%', transform: 'translateY(-50%)', }}>{showPassword ? "Hide" : "Show"}</button>
                 <label htmlFor="password">Password</label>
                 <div className="input-box">
                     <input
@@ -120,8 +123,8 @@ const Registration = () => {
                     />
                     <span className="error-message">{registerError.badPassword}</span>
                 </div>
-
-                <label htmlFor="confirmPassword">Confirm Password </label>
+                <button className='show-hide' type='button' onClick={togglePasswordVisibility} style={{ position: 'absolute', right: '50px', top: '73%', transform: 'translateY(-50%)' }}>{showPassword ? "Hide" : "Show"}</button>
+                <label htmlFor="confirmPassword">Confirm Password</label>
                 <div className="input-box">
                     <input
                         className={registerError.badPassword ? "bad-input" : ""}
@@ -134,7 +137,7 @@ const Registration = () => {
                         required
                     />
                 </div>
-
+    
 
                 <button type="submit" className="btn" onClick={handleSubmit}>Register</button>
 

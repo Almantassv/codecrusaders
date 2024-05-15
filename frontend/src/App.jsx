@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { AuthProvider} from './services/AuthContext';
 import PrivateRoute from './services/privateRoutes';
+import { AuthProvider } from './services/AuthContext';
 import Navbar from "./components/pages/Navbar";
 import Login from './components/pages/Login';
 import Registration from "./components/pages/Registration";
@@ -17,6 +17,7 @@ import './styles/Login.css';
 import './styles/Create.css';
 import './styles/TaskBoard.css';
 import CreateTask from './components/pages/tasksDashboard/CreateTask';
+import Admin from './components/pages/Admin/AdminBoard';
 
 function App() {
 
@@ -26,17 +27,17 @@ function App() {
         <div className='App'>
           <Navbar />
           <div className='content'>
-           
 
             <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Registration />} />
-            <Route path="/projects" element={<PrivateRoute roles={['User']}><Home /></PrivateRoute>} />
-            <Route path="/list" element={<PrivateRoute roles={['User']}><Home /></PrivateRoute>} />
-            <Route path="/create" element={<PrivateRoute roles={['User']}><Create /></PrivateRoute>} />
-            <Route path="/projects/:id" element={<PrivateRoute roles={['User']}><ProjectDetails /></PrivateRoute>} />
-            <Route path="/projects/:id/edit" element={<PrivateRoute roles={['User']}><EditProject /></PrivateRoute>} />
-            <Route path="/projects/:id/create-task" element={<PrivateRoute roles={['User']}><CreateTask /></PrivateRoute>} />
+            <Route path="/admin" element={<PrivateRoute roles={['Admin']}>{<Admin />}</PrivateRoute>} />
+            <Route path="/" element={<PrivateRoute roles={['User', 'Admin']}><Home /></PrivateRoute>} />
+            <Route path="/list" element={<PrivateRoute roles={['User', 'Admin']}><Home /></PrivateRoute>} />
+            <Route path="/create" element={<PrivateRoute roles={['User', 'Admin']}><Create /></PrivateRoute>} />
+            <Route path="/projects/:id" element={<PrivateRoute roles={['User', 'Admin']}><ProjectDetails /></PrivateRoute>} />
+            <Route path="/projects/:id/edit" element={<PrivateRoute roles={['User', 'Admin']}><EditProject /></PrivateRoute>} />
+            <Route path="/projects/:id/create-task" element={<PrivateRoute roles={['User', 'Admin']}><CreateTask /></PrivateRoute>} />
           </Routes>
           </div>
         </div>

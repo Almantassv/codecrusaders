@@ -72,6 +72,22 @@ const ProjectDetails = () => {
     }
   };
 
+  // const handleClick = async () => {
+  //   try {
+  //     // Send a request to add a deletion request for the project
+  //     await axios.post(`http://localhost:8080/api/projects/${project.id}/deletion-requests`, null, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     // Optionally, you can show a message indicating that the deletion request has been sent
+  //     console.log("Deletion request sent for project:", project.id);
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
+   
+
   const handleProjectStatusChange = async (newStatus) => {
     try {
       await axios.put(

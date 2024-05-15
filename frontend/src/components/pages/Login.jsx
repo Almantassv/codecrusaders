@@ -26,7 +26,7 @@ const Login = () => {
             console.log("Response: " + response.data.token);
             const { token } = response.data;
             authContext.loginUser(token);
-            navigate('/dashboard');
+            navigate('/');
         } catch (error) {
             console.log('Error:' + error);
             setLoginError({badUsername: 'Invalid username or password', badPassword: ''})

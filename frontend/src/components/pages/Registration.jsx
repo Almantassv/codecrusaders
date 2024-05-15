@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+
 const Registration = () => {
     
     const [formData, setFormData] = useState({
@@ -90,6 +91,7 @@ const Registration = () => {
                         required
                     />
                     <span className="error-message">{registerError.badUsername}</span>
+                    {/* <p>{registerError.badUsername}</p> */}
                 </div>
 
                 <label htmlFor="email">Email</label>

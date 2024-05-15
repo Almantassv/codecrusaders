@@ -14,7 +14,7 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <h1>Project Management</h1>
+      <h1>FRANK</h1>
       <div className="links">
         <Link to="/">Home</Link>
         {token && (

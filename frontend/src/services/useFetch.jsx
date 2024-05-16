@@ -7,6 +7,8 @@ const useFetch = (url) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(true);
+  const [resCode, setResCode] = useState(null);
+
 
   useEffect(() => {
     console.log('Token:', token); // Log the token value
@@ -19,6 +21,7 @@ const useFetch = (url) => {
         });
         setData(response.data);
         setIsPending(false);
+        setResCode(response.status);
       } catch (error) {
         setError(error.message);
         setIsPending(false);
@@ -27,7 +30,7 @@ const useFetch = (url) => {
     fetchData();
   }, [url, token]); // Include token in the dependency array
 
-  return { data, error, isPending };
+  return { data, error, isPending, resCode };
 };
 
 export default useFetch;

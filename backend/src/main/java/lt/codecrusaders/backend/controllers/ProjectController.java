@@ -27,12 +27,24 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Project>> getProjects(@RequestParam(required = false, name = "search") String searchQuery) {
+    public ResponseEntity<List<Project>> getProjects(
+        @RequestParam(required = false, name = "search") String searchQuery,
+        @RequestParam(required = false, name = "page") Integer page) {
         List<Project> projects;
         if (searchQuery != null && !searchQuery.isEmpty()) {
             projects = projectService.findProjectsByName(searchQuery);
         } else {
             projects = projectService.getAllProjects();
+        }
+        if (page != null && page > 0) {
+            int projectsPerPage = 10;
+            int maxPages = (int)Math.ceil((double)projects.size() / projectsPerPage);
+            int startIndex = (page - 1) * projectsPerPage;
+            int endIndex = Math.min(startIndex + projectsPerPage, projects.size());
+
+            projects = projects.subList(startIndex, endIndex);
+
+            return new ResponseEntity<>(projects, (page == maxPages ? HttpStatus.ACCEPTED : HttpStatus.OK));
         }
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }

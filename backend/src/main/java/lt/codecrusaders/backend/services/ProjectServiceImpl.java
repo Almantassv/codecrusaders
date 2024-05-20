@@ -2,10 +2,7 @@ package lt.codecrusaders.backend.services;
 
 import lt.codecrusaders.backend.model.dto.ProjectCreationDTO;
 import lt.codecrusaders.backend.model.dto.TaskCreationDTO;
-import lt.codecrusaders.backend.model.entity.EPriority;
-import lt.codecrusaders.backend.model.entity.EStatus;
-import lt.codecrusaders.backend.model.entity.Project;
-import lt.codecrusaders.backend.model.entity.Task;
+import lt.codecrusaders.backend.model.entity.*;
 import lt.codecrusaders.backend.repositories.ProjectRepository;
 import lt.codecrusaders.backend.repositories.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -61,7 +58,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> findProjectsByName(String name) { return projectRepository.findByNameContaining(name); }
+    public List<Project> findProjectsByName(String name, String status) {
+        if (status != null && !status.isEmpty()) {
+            return projectRepository.findByStatus(ProjectStatus.valueOf(status.toUpperCase()));
+        }
+        return projectRepository.findByNameContainingIgnoreCase(name);
+    }
 
     @Override
     public Task createProjectTask(Long projectId, TaskCreationDTO taskCreationDTO) {

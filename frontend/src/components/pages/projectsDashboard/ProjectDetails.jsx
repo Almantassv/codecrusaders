@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { useAuth } from "../../../services/useAuth";
 import useFetch from "../../../services/useFetch";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../../styles/ProjectDetails.css";
 
@@ -11,7 +10,6 @@ import done from '../../../assets/done.png';
 import in_progress from '../../../assets/in_progress.png';
 import todo from '../../../assets/todo.png';
 
-
 const ProjectDetails = () => {
   const { id } = useParams();
   const { token } = useAuth();
@@ -19,6 +17,7 @@ const ProjectDetails = () => {
     `http://localhost:8080/api/projects/${id}`,
     token
   );
+
   const [tasks, setTasks] = useState([]);
   const [tasksError, setTasksError] = useState(null);
   const [tasksIsPending, setTasksIsPending] = useState(true);
@@ -46,7 +45,6 @@ const ProjectDetails = () => {
   }, [id, token]);
 
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
 
   const handleClickDelete = async () => {
     try {
@@ -91,6 +89,20 @@ const ProjectDetails = () => {
     }
   };
 
+
+  const renameStatus = (originalStatus) => {
+    // Define mapping of original status values to renamed values
+    const statusMap = {
+      'TODO': 'To Do',
+      'IN_PROGRESS': 'In Progress',
+      'COMPLETED': 'Completed',
+      // Add more mappings as needed
+    };
+
+    // Return renamed status value if mapping exists, otherwise return the original status value
+    return statusMap[originalStatus] || originalStatus;
+  };
+
   const [editingTask, setEditingTask] = useState(null);
 
   const handleEditTask = async (updatedTask) => {
@@ -122,7 +134,6 @@ const ProjectDetails = () => {
     DONE: done
   };
 
-
   return (
     <div className="project-details">
       {isPending && <div>Loading...</div>}
@@ -130,125 +141,43 @@ const ProjectDetails = () => {
       {project && (
         <article>
           <h2>{project.name} Id: {project.id}</h2>
-          <h3>{project.description}</h3>
-          <h3>Status: {project.status}</h3>
+
+          <h3>Description: {project.description}</h3>
+          <h3>Status: {renameStatus(project.status)}</h3>
           <h3>Members: </h3>
           <h3>Tasks: </h3>
-          {/* Search Bar and Buttons */}
-          <div className="fixed-header">
-            <input
-              type="text"
-              className="task-search-bar"
-              placeholder="Search tasks"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <Link to={`/projects/${project.id}/taskboard`}>
-              <button>Show Task Board</button>
-            </Link>
-            <button onClick={() => setShowModal(true)}>Delete Project</button>
-            <Link to={`/projects/${project.id}/edit`}>
-              <button>Edit</button>
-            </Link>
-            <Link to={`/projects/${project.id}/create-task`}>
-              <button>Create Task</button>
-            </Link>
-          </div>
+          <ul className="task-list">
+            {tasks.map((task) => (
+              <li className="task-item" key={task.id}>
+                <div className="task-name">{task.name}</div>
+                <div className="task-description">Description: {task.description}</div>
+                <div>Priority: {task.priority}</div>
+                <div>Status: {task.status}</div>
+                <div className="task-controls">
+                  <button onClick={() => setSelectedTaskId(task.id)}>Delete</button>
+                </div>
+              </li>
+            ))}
+          </ul>
           {selectedTaskId && (
             <button className="confirm-delete-button-red" onClick={handleClickDelete}>Confirm Delete</button>
           )}
-          {showModal && (
-            <div className="modal">
-              <div className="modal-content">
-                <p>Are you sure you want to delete this project?</p>
-                <div>
-                  <button onClick={handleClickDeleteProject}>Yes</button>
-                  <button onClick={() => setShowModal(false)}>No</button>
-                </div>
-              </div>
-            </div>
-          )}
-          <ul className="task-list">
-            {filteredTasks.map((task) => (
-              <div className={`task-item task-priority-${task.priority.toLowerCase()}`} key={task.id}>
-                <div className="task-header">
-                  <div className="task-name">{task.name}</div>
-                  <div className="task-status">
-                    <img src={statusIcons[task.status]} alt={task.status} />
-                  </div>
-                </div>
-                <div className="task-description">
-                  {task.description}
-                </div>
-                <div className="task-priority">
-                  
-                </div>
-                <div className="task-controls">
-                  <button className="delete-task-btn" onClick={() => setSelectedTaskId(task.id)}>
-                    <i className="fas fa-trash"></i> Delete
-                  </button>
-                  
-                  {editingTask === null || editingTask.id !== task.id ? (
-                    <button onClick={() => setEditingTask(task)}>Edit</button>
-                  ) : (
-                    <div className="edit-task-form-inline">
-                      <label>Name: </label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={editingTask.name}
-                        onChange={(e) => setEditingTask({ ...editingTask, name: e.target.value })}
-                        required
-                      />
-                      <label>Description: </label>
-                      <textarea
-                        name="description"
-                        value={editingTask.description}
-                        onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
-                        required
-                      />
-                      <label>Priority: </label>
-                      <select
-                        name="priority"
-                        value={editingTask.priority}
-                        onChange={(e) => setEditingTask({ ...editingTask, priority: e.target.value })}
-                        required
-                      >
-                        <option value="HIGH">High</option>
-                        <option value="MEDIUM">Medium</option>
-                        <option value="LOW">Low</option>
-                      </select>
-                      <label>Status: </label>
-                      <select
-                        name="status"
-                        value={editingTask.status}
-                        onChange={(e) => setEditingTask({ ...editingTask, status: e.target.value })}
-                        required
-                      >
-                        <option value="TODO">To Do</option>
-                        <option value="IN_PROGRESS">In Progress</option>
-                        <option value="DONE">Done</option>
-                      </select>
-                      <button onClick={() => handleEditTask(editingTask)}>Save</button>
-                      <button onClick={() => setEditingTask(null)}>Cancel</button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </ul>
-          
-          {/* {showModal && (
-            <div className="modal">
-              <div className="modal-content">
-                <p>Are you sure you want to delete this project?</p>
-                <div>
-                  <button onClick={handleClickDeleteProject}>Yes</button>
-                  <button onClick={() => setShowModal(false)}>No</button>
-                </div>
-              </div>
-            </div>
-          )} */}
+
+          <button onClick={() => setShowTaskBoard(!showTaskBoard)}>
+            {showTaskBoard ? "Hide Task Board" : "Show Task Board"}
+          </button>
+          {showTaskBoard && <TaskBoard projectId={project.id} />}
+
+          <Link to={`/projects/${project.id}/delete`}>
+            <button>Delete Project</button>
+          </Link>
+          <Link to={`/projects/${project.id}/edit`}>
+            <button>Edit Project</button>
+          </Link>
+          <Link to={`/projects/${project.id}/create-task`}>
+            <button>Create Task</button>
+          </Link>
+
         </article>
       )}
     </div>

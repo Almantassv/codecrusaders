@@ -18,6 +18,9 @@ import './styles/Create.css';
 import './styles/TaskBoard.css';
 import CreateTask from './components/pages/tasksDashboard/CreateTask';
 import Admin from './components/pages/Admin/AdminBoard';
+
+import DeleteProjectPage from './components/pages/projectsDashboard/DeleteProjectPage';
+
 import TaskBoard from './components/pages/tasksDashboard/TaskBoard';
 
 function App() {
@@ -32,9 +35,10 @@ function App() {
             <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Registration />} />
-            <Route path="/admin" element={<PrivateRoute roles={['Admin']}>{<Admin />}</PrivateRoute>} />
+            {/* <Route path="/admin" element={<PrivateRoute roles={['Admin']}>{<Admin />}</PrivateRoute>} /> */}
             <Route path="/" element={<PrivateRoute roles={['User', 'Admin']}><Home /></PrivateRoute>} />
             <Route path="/list" element={<PrivateRoute roles={['User', 'Admin']}><Home /></PrivateRoute>} />
+            <Route path="/projects/:projectId/delete" element={<PrivateRoute roles={['Admin']}><DeleteProjectPage /></PrivateRoute>} />
             <Route path="/create" element={<PrivateRoute roles={['User', 'Admin']}><Create /></PrivateRoute>} />
             <Route path="/projects/:id" element={<PrivateRoute roles={['User', 'Admin']}><ProjectDetails /></PrivateRoute>} />
             <Route path="/projects/:id/edit" element={<PrivateRoute roles={['User', 'Admin']}><EditProject /></PrivateRoute>} />

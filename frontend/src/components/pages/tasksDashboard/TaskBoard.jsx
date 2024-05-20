@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
 import { useAuth } from '../../../services/AuthContext';
-import "../../../styles/TaskBoard.css";
 
 const apiBaseUrl = 'http://localhost:8080/api/projects';
 const axiosInstance = axios.create({
   baseURL: apiBaseUrl,
 });
 
-const TaskBoard = () => {
+const TaskBoard = ({ projectId, onProjectStatusChange }) => {
   const { token } = useAuth();
-  const { id: projectId } = useParams();
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
@@ -36,10 +33,10 @@ const TaskBoard = () => {
   };
 
   const handleDrop = async (e, status) => {
-    const task = JSON.parse(e.dataTransfer.getData('task'));
+    var task = JSON.parse(e.dataTransfer.getData('task'));
     try {
       task.status = status;
-      await axios.put(
+      const response = await axios.put(
         `http://localhost:8080/api/projects/${projectId}/tasks/${task.id}`,
         task,
         {
@@ -48,22 +45,9 @@ const TaskBoard = () => {
           },
         }
       );
-      fetchTasks();
+      fetchTasks(); // Assuming fetchTasks is a function that fetches tasks again after updating status
     } catch (error) {
       console.error('Error updating task status:', error);
-    }
-  };
-
-  const getPriorityClass = (priority) => {
-    switch (priority) {
-      case 'high':
-        return 'task-priority-high';
-      case 'medium':
-        return 'task-priority-medium';
-      case 'low':
-        return 'task-priority-low';
-      default:
-        return '';
     }
   };
 
@@ -71,45 +55,27 @@ const TaskBoard = () => {
     return tasks
       .filter((task) => task.status === status)
       .map((task) => (
-        <li
-          key={task.id}
-          draggable
-          onDragStart={(e) => handleDragStart(e, task)}
-          className={`task-item ${getPriorityClass(task.priority)}`}
-        >
-          {task.name}
+        <li key={task.id} draggable onDragStart={(e) => {
+          handleDragStart(e, task)
+        }}>
+          {task.status}
         </li>
       ));
   };
 
   return (
     <div className="kanban-board">
-      <div
-        className="lane"
-        id="todo"
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={(e) => handleDrop(e, 'TODO')}
-      >
-        <h3 className="lane-header">TODO</h3>
-        <ul className="task-list">{renderTasksByStatus('TODO')}</ul>
+      <div className="lane" id="todo" onDragOver={(e) => e.preventDefault()} onDrop={(e) => handleDrop(e, 'TODO')}>
+        <h3>TODO</h3>
+        <ul>{renderTasksByStatus('TODO')}</ul>
       </div>
-      <div
-        className="lane"
-        id="in-progress"
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={(e) => handleDrop(e, 'IN_PROGRESS')}
-      >
-        <h3 className="lane-header">IN PROGRESS</h3>
-        <ul className="task-list">{renderTasksByStatus('IN_PROGRESS')}</ul>
+      <div className="lane" id="in-progress" onDragOver={(e) => e.preventDefault()} onDrop={(e) => handleDrop(e, 'IN_PROGRESS')}>
+        <h3>IN PROGRESS</h3>
+        <ul>{renderTasksByStatus('IN_PROGRESS')}</ul>
       </div>
-      <div
-        className="lane"
-        id="done"
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={(e) => handleDrop(e, 'DONE')}
-      >
-        <h3 className="lane-header">DONE</h3>
-        <ul className="task-list">{renderTasksByStatus('DONE')}</ul>
+      <div className="lane" id="done" onDragOver={(e) => e.preventDefault()} onDrop={(e) => handleDrop(e, 'DONE')}>
+        <h3>DONE</h3>
+        <ul>{renderTasksByStatus('DONE')}</ul>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../../services/AuthContext';
 import "../../styles/SearchBar.css";
 
+
 const SearchBar = () => {
     const { token } = useAuth();
     const [searchInput, setSearchInput] = useState("");
@@ -16,7 +17,7 @@ const SearchBar = () => {
             setLoading(true);
             setError(null);
             try {
-                const response = await axios.get(`http://localhost:8080/api/projects?search=${searchInput.toLowerCase()}`, {
+                const response = await axios.get(`http://localhost:8080/api/projects?search=${searchInput}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -30,11 +31,11 @@ const SearchBar = () => {
             }
         };
 
-        // Call the fetch function when searchInput changes and is at least 3 characters long
-        if (searchInput.length >= 3) {
+        // Call the fetch function when searchInput changes
+        if (searchInput !== "") {
             fetchSearchResults();
         } else {
-            // Clear search results if searchInput is less than 3 characters
+            // Clear search results if searchInput is empty
             setSearchResults([]);
         }
     }, [searchInput, token]);
@@ -51,9 +52,9 @@ const SearchBar = () => {
                 onChange={handleInputChange}
                 placeholder="Search projects..."
             />
-            {loading && <p>Loading...</p>}
+             {loading && <p></p>}
             {error && <p>{error}</p>}
-            <div className='search-results-container'>
+            < div className='search-results-container'>
                 {searchResults.map((project) => (
                     <div key={project.id} className='search-result'>
                         <Link to={`/projects/${project.id}`} className='link-result'>

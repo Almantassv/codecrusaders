@@ -19,6 +19,8 @@ const Navbar = () => {
         <Link to="/">Home</Link>
         {token && (
           <>
+            <Link to="/admin">Admin</Link>
+            {/* {user.role === "admin" && <Link to="/admin">Admin</Link>} */}
             <Link to="/list">All Projects</Link>
             <Link to="/create">New Project</Link>
             <span className="user-name">{user.name}</span>

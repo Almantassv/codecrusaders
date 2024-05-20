@@ -61,13 +61,6 @@ const ProjectList = ({ projects, projectsPage, updateProjects, reachedMaxPage })
     // Return renamed status value if mapping exists, otherwise return the original status value
     return statusMap[originalStatus] || originalStatus;
   };
-
-  const truncateDescription = (description) => {
-    if (description.length > 200) {
-      return `${description.substring(0, 200)}...`;
-    }
-    return description;
-  };
   
   return (
     <div className="projects-container">
@@ -89,7 +82,7 @@ const ProjectList = ({ projects, projectsPage, updateProjects, reachedMaxPage })
             <div className="project-preview" key={project.id}>
               <Link to={`/projects/${project.id}`}>
                 <h3>{project.name}</h3>
-                <p>{truncateDescription(project.description)}</p>
+                <p>{project.description}</p>
                 <p>Status: {renameStatus(project.status)}</p>
                 <div className="project-details">
                   <p>Total tasks: {totalTasks}</p>

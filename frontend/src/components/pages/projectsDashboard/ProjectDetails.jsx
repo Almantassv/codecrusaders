@@ -5,22 +5,25 @@ import useFetch from "../../../services/useFetch";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../../styles/ProjectDetails.css";
-import TaskBoard from "../tasksDashboard/TaskBoard";
+
+
+import done from '../../../assets/done.png';
+import in_progress from '../../../assets/in_progress.png';
+import todo from '../../../assets/todo.png';
 
 
 const ProjectDetails = () => {
   const { id } = useParams();
-  const { token } = useAuth(); // Access token from AuthContext
+  const { token } = useAuth();
   const { data: project, error, isPending } = useFetch(
     `http://localhost:8080/api/projects/${id}`,
     token
   );
-  // Tasks
   const [tasks, setTasks] = useState([]);
-  const [showTaskBoard, setShowTaskBoard] = useState(false);
   const [tasksError, setTasksError] = useState(null);
   const [tasksIsPending, setTasksIsPending] = useState(true);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -52,41 +55,25 @@ const ProjectDetails = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setTasks(tasks.filter(task => task.id !== selectedTaskId)); // Remove the deleted task from state
-      setSelectedTaskId(null); // Reset selected task ID
+      setTasks(tasks.filter(task => task.id !== selectedTaskId));
+      setSelectedTaskId(null);
     } catch (error) {
       console.error("Error deleting task:", error);
     }
   };
 
-  const handleClick = async () => {
+  const handleClickDeleteProject = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/projects/${project.id}`, {
+      await axios.delete(`http://localhost:8080/api/projects/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      navigate("/list");
+      navigate('/list');
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error deleting project:", error);
     }
   };
-
-  // const handleClick = async () => {
-  //   try {
-  //     // Send a request to add a deletion request for the project
-  //     await axios.post(`http://localhost:8080/api/projects/${project.id}/deletion-requests`, null, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     // Optionally, you can show a message indicating that the deletion request has been sent
-  //     console.log("Deletion request sent for project:", project.id);
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
-   
 
   const handleProjectStatusChange = async (newStatus) => {
     try {
@@ -99,66 +86,169 @@ const ProjectDetails = () => {
           },
         }
       );
-      // Assuming the project status is updated successfully
     } catch (error) {
       console.error('Error updating project status:', error);
     }
   };
 
+  const [editingTask, setEditingTask] = useState(null);
+
+  const handleEditTask = async (updatedTask) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/api/projects/${id}/tasks/${updatedTask.id}`,
+        updatedTask,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setTasks(tasks.map((task) => (task.id === updatedTask.id ? response.data : task)));
+      setEditingTask(null);
+    } catch (error) {
+      console.error('Error updating task:', error);
+      alert('Failed to update task. Please try again.');
+    }
+  };
+
+  const filteredTasks = tasks.filter(task =>
+    task.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const statusIcons = {
+    TODO: todo,
+    IN_PROGRESS: in_progress,
+    DONE: done
+  };
+
 
   return (
     <div className="project-details">
-      <button onClick={() => navigate(-1)}>Back</button>
       {isPending && <div>Loading...</div>}
       {error && <div>{error}</div>}
       {project && (
         <article>
           <h2>{project.name} Id: {project.id}</h2>
-          <h3>Description: {project.description}</h3>
+          <h3>{project.description}</h3>
           <h3>Status: {project.status}</h3>
           <h3>Members: </h3>
           <h3>Tasks: </h3>
-          <ul className="task-list">
-  {tasks.map((task) => (
-    <li className="task-item" key={task.id}>
-      <div className="task-name">{task.name}</div>
-      <div className="task-description">Description: {task.description}</div>
-      <div>Priority: {task.priority}</div>
-      <div>Status: {(task.status)}</div>
-      <div className="task-controls">
-        <button onClick={() => setSelectedTaskId(task.id)}>Delete</button>
-      </div>
-    </li>
-  ))}
-</ul>
+          {/* Search Bar and Buttons */}
+          <div className="fixed-header">
+            <input
+              type="text"
+              className="task-search-bar"
+              placeholder="Search tasks"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <Link to={`/projects/${project.id}/taskboard`}>
+              <button>Show Task Board</button>
+            </Link>
+            <button onClick={() => setShowModal(true)}>Delete Project</button>
+            <Link to={`/projects/${project.id}/edit`}>
+              <button>Edit</button>
+            </Link>
+            <Link to={`/projects/${project.id}/create-task`}>
+              <button>Create Task</button>
+            </Link>
+          </div>
           {selectedTaskId && (
-            <button onClick={handleClickDelete}>Confirm Delete</button>
+            <button className="confirm-delete-button-red" onClick={handleClickDelete}>Confirm Delete</button>
           )}
-
-          <button onClick={() => setShowTaskBoard(!showTaskBoard)}>
-            {showTaskBoard ? "Hide Task Board" : "Show Task Board"}
-          </button>
-          {showTaskBoard && <TaskBoard projectId={project.id} />}
-
-          <button onClick={() => setShowModal(true)}>Delete Project</button>
-          <Link to={`/projects/${project.id}/edit`}>
-            <button>Edit Project</button>
-          </Link>
-          <Link to={`/projects/${project.id}/create-task`}>
-            <button>Create Task</button>
-          </Link>
-          {/* Confirmation modal */}
           {showModal && (
             <div className="modal">
               <div className="modal-content">
                 <p>Are you sure you want to delete this project?</p>
                 <div>
-                  <button onClick={handleClick}>Yes</button>
+                  <button onClick={handleClickDeleteProject}>Yes</button>
                   <button onClick={() => setShowModal(false)}>No</button>
                 </div>
               </div>
             </div>
           )}
+          <ul className="task-list">
+            {filteredTasks.map((task) => (
+              <div className={`task-item task-priority-${task.priority.toLowerCase()}`} key={task.id}>
+                <div className="task-header">
+                  <div className="task-name">{task.name}</div>
+                  <div className="task-status">
+                    <img src={statusIcons[task.status]} alt={task.status} />
+                  </div>
+                </div>
+                <div className="task-description">
+                  {task.description}
+                </div>
+                <div className="task-priority">
+                  
+                </div>
+                <div className="task-controls">
+                  <button className="delete-task-btn" onClick={() => setSelectedTaskId(task.id)}>
+                    <i className="fas fa-trash"></i> Delete
+                  </button>
+                  
+                  {editingTask === null || editingTask.id !== task.id ? (
+                    <button onClick={() => setEditingTask(task)}>Edit</button>
+                  ) : (
+                    <div className="edit-task-form-inline">
+                      <label>Name: </label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={editingTask.name}
+                        onChange={(e) => setEditingTask({ ...editingTask, name: e.target.value })}
+                        required
+                      />
+                      <label>Description: </label>
+                      <textarea
+                        name="description"
+                        value={editingTask.description}
+                        onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
+                        required
+                      />
+                      <label>Priority: </label>
+                      <select
+                        name="priority"
+                        value={editingTask.priority}
+                        onChange={(e) => setEditingTask({ ...editingTask, priority: e.target.value })}
+                        required
+                      >
+                        <option value="HIGH">High</option>
+                        <option value="MEDIUM">Medium</option>
+                        <option value="LOW">Low</option>
+                      </select>
+                      <label>Status: </label>
+                      <select
+                        name="status"
+                        value={editingTask.status}
+                        onChange={(e) => setEditingTask({ ...editingTask, status: e.target.value })}
+                        required
+                      >
+                        <option value="TODO">To Do</option>
+                        <option value="IN_PROGRESS">In Progress</option>
+                        <option value="DONE">Done</option>
+                      </select>
+                      <button onClick={() => handleEditTask(editingTask)}>Save</button>
+                      <button onClick={() => setEditingTask(null)}>Cancel</button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </ul>
+          
+          {/* {showModal && (
+            <div className="modal">
+              <div className="modal-content">
+                <p>Are you sure you want to delete this project?</p>
+                <div>
+                  <button onClick={handleClickDeleteProject}>Yes</button>
+                  <button onClick={() => setShowModal(false)}>No</button>
+                </div>
+              </div>
+            </div>
+          )} */}
         </article>
       )}
     </div>

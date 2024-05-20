@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { useAuth } from "../../../services/useAuth";
 import useFetch from "../../../services/useFetch";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../../styles/ProjectDetails.css";
 import TaskBoard from "../tasksDashboard/TaskBoard";
-
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -15,7 +13,7 @@ const ProjectDetails = () => {
     `http://localhost:8080/api/projects/${id}`,
     token
   );
-  // Tasks
+  
   const [tasks, setTasks] = useState([]);
   const [showTaskBoard, setShowTaskBoard] = useState(false);
   const [tasksError, setTasksError] = useState(null);
@@ -43,7 +41,6 @@ const ProjectDetails = () => {
   }, [id, token]);
 
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
 
   const handleClickDelete = async () => {
     try {
@@ -72,22 +69,6 @@ const ProjectDetails = () => {
     }
   };
 
-  // const handleClick = async () => {
-  //   try {
-  //     // Send a request to add a deletion request for the project
-  //     await axios.post(`http://localhost:8080/api/projects/${project.id}/deletion-requests`, null, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     // Optionally, you can show a message indicating that the deletion request has been sent
-  //     console.log("Deletion request sent for project:", project.id);
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
-   
-
   const handleProjectStatusChange = async (newStatus) => {
     try {
       await axios.put(
@@ -105,6 +86,18 @@ const ProjectDetails = () => {
     }
   };
 
+  const renameStatus = (originalStatus) => {
+    // Define mapping of original status values to renamed values
+    const statusMap = {
+      'TODO': 'To Do',
+      'IN_PROGRESS': 'In Progress',
+      'COMPLETED': 'Completed',
+      // Add more mappings as needed
+    };
+
+    // Return renamed status value if mapping exists, otherwise return the original status value
+    return statusMap[originalStatus] || originalStatus;
+  };
 
   return (
     <div className="project-details">
@@ -115,22 +108,22 @@ const ProjectDetails = () => {
         <article>
           <h2>{project.name} Id: {project.id}</h2>
           <h3>Description: {project.description}</h3>
-          <h3>Status: {project.status}</h3>
+          <h3>Status: {renameStatus(project.status)}</h3>
           <h3>Members: </h3>
           <h3>Tasks: </h3>
           <ul className="task-list">
-  {tasks.map((task) => (
-    <li className="task-item" key={task.id}>
-      <div className="task-name">{task.name}</div>
-      <div className="task-description">Description: {task.description}</div>
-      <div>Priority: {task.priority}</div>
-      <div>Status: {(task.status)}</div>
-      <div className="task-controls">
-        <button onClick={() => setSelectedTaskId(task.id)}>Delete</button>
-      </div>
-    </li>
-  ))}
-</ul>
+            {tasks.map((task) => (
+              <li className="task-item" key={task.id}>
+                <div className="task-name">{task.name}</div>
+                <div className="task-description">Description: {task.description}</div>
+                <div>Priority: {task.priority}</div>
+                <div>Status: {task.status}</div>
+                <div className="task-controls">
+                  <button onClick={() => setSelectedTaskId(task.id)}>Delete</button>
+                </div>
+              </li>
+            ))}
+          </ul>
           {selectedTaskId && (
             <button onClick={handleClickDelete}>Confirm Delete</button>
           )}
@@ -140,25 +133,15 @@ const ProjectDetails = () => {
           </button>
           {showTaskBoard && <TaskBoard projectId={project.id} />}
 
-          <button onClick={() => setShowModal(true)}>Delete Project</button>
+          <Link to={`/projects/${project.id}/delete`}>
+            <button>Delete Project</button>
+          </Link>
           <Link to={`/projects/${project.id}/edit`}>
             <button>Edit Project</button>
           </Link>
           <Link to={`/projects/${project.id}/create-task`}>
             <button>Create Task</button>
           </Link>
-          {/* Confirmation modal */}
-          {showModal && (
-            <div className="modal">
-              <div className="modal-content">
-                <p>Are you sure you want to delete this project?</p>
-                <div>
-                  <button onClick={handleClick}>Yes</button>
-                  <button onClick={() => setShowModal(false)}>No</button>
-                </div>
-              </div>
-            </div>
-          )}
         </article>
       )}
     </div>

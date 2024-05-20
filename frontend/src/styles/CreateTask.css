@@ -1,0 +1,48 @@
+.create-task {
+    padding: 1rem;
+  }
+  
+  .create-task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .create-task-form label {
+    font-weight: bold;
+  }
+  
+  .create-task-form input,
+  .create-task-form select,
+  .create-task-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    max-height: 200px; /* Add this line to set the maximum height */
+  resize: vertical;  /* Allows vertical resizing but within the limits */
+  }
+  
+  .create-task-form textarea {
+    height: 100px;
+  }
+  
+  .create-task-form .form-buttons {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .create-task-form .form-buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #e657eb;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .create-task-form .form-buttons button:hover {
+    background-color: #0056b3;
+  }
+  

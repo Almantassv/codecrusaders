@@ -12,6 +12,7 @@ const Registration = () => {
         confirmPassword: ''
     });
 
+
     const [showPassword, setShowPassword] = useState(false);
     const [registerError, setRegisterError] = useState({ badUsername: '', badEmail: '', badPassword: '' });
     const navigate = useNavigate(); // Use useNavigate hook to navigate

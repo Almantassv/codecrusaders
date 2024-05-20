@@ -4,21 +4,25 @@ import { useAuth } from "../../../services/useAuth";
 import useFetch from "../../../services/useFetch";
 import axios from "axios";
 import "../../../styles/ProjectDetails.css";
-import TaskBoard from "../tasksDashboard/TaskBoard";
+
+
+import done from '../../../assets/done.png';
+import in_progress from '../../../assets/in_progress.png';
+import todo from '../../../assets/todo.png';
 
 const ProjectDetails = () => {
   const { id } = useParams();
-  const { token } = useAuth(); // Access token from AuthContext
+  const { token } = useAuth();
   const { data: project, error, isPending } = useFetch(
     `http://localhost:8080/api/projects/${id}`,
     token
   );
-  
+
   const [tasks, setTasks] = useState([]);
-  const [showTaskBoard, setShowTaskBoard] = useState(false);
   const [tasksError, setTasksError] = useState(null);
   const [tasksIsPending, setTasksIsPending] = useState(true);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -49,23 +53,23 @@ const ProjectDetails = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setTasks(tasks.filter(task => task.id !== selectedTaskId)); // Remove the deleted task from state
-      setSelectedTaskId(null); // Reset selected task ID
+      setTasks(tasks.filter(task => task.id !== selectedTaskId));
+      setSelectedTaskId(null);
     } catch (error) {
       console.error("Error deleting task:", error);
     }
   };
 
-  const handleClick = async () => {
+  const handleClickDeleteProject = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/projects/${project.id}`, {
+      await axios.delete(`http://localhost:8080/api/projects/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      navigate("/list");
+      navigate('/list');
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error deleting project:", error);
     }
   };
 
@@ -80,11 +84,11 @@ const ProjectDetails = () => {
           },
         }
       );
-      // Assuming the project status is updated successfully
     } catch (error) {
       console.error('Error updating project status:', error);
     }
   };
+
 
   const renameStatus = (originalStatus) => {
     // Define mapping of original status values to renamed values
@@ -99,14 +103,45 @@ const ProjectDetails = () => {
     return statusMap[originalStatus] || originalStatus;
   };
 
+  const [editingTask, setEditingTask] = useState(null);
+
+  const handleEditTask = async (updatedTask) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/api/projects/${id}/tasks/${updatedTask.id}`,
+        updatedTask,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setTasks(tasks.map((task) => (task.id === updatedTask.id ? response.data : task)));
+      setEditingTask(null);
+    } catch (error) {
+      console.error('Error updating task:', error);
+      alert('Failed to update task. Please try again.');
+    }
+  };
+
+  const filteredTasks = tasks.filter(task =>
+    task.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const statusIcons = {
+    TODO: todo,
+    IN_PROGRESS: in_progress,
+    DONE: done
+  };
+
   return (
     <div className="project-details">
-      <button onClick={() => navigate(-1)}>Back</button>
       {isPending && <div>Loading...</div>}
       {error && <div>{error}</div>}
       {project && (
         <article>
           <h2>{project.name} Id: {project.id}</h2>
+
           <h3>Description: {project.description}</h3>
           <h3>Status: {renameStatus(project.status)}</h3>
           <h3>Members: </h3>
@@ -125,7 +160,7 @@ const ProjectDetails = () => {
             ))}
           </ul>
           {selectedTaskId && (
-            <button onClick={handleClickDelete}>Confirm Delete</button>
+            <button className="confirm-delete-button-red" onClick={handleClickDelete}>Confirm Delete</button>
           )}
 
           <button onClick={() => setShowTaskBoard(!showTaskBoard)}>
@@ -142,6 +177,7 @@ const ProjectDetails = () => {
           <Link to={`/projects/${project.id}/create-task`}>
             <button>Create Task</button>
           </Link>
+
         </article>
       )}
     </div>

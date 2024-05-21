@@ -14,11 +14,13 @@ import todo from '../../../assets/todo.png';
 
 const ProjectDetails = () => {
   const { id } = useParams();
-  const { token } = useAuth();
+
+  const { token, user } = useAuth(); // Assuming useAuth returns the user object with role
   const { data: project, error, isPending } = useFetch(
     `http://localhost:8080/api/projects/${id}`,
     token
   );
+
   const [tasks, setTasks] = useState([]);
   const [tasksError, setTasksError] = useState(null);
   const [tasksIsPending, setTasksIsPending] = useState(true);
@@ -62,6 +64,7 @@ const ProjectDetails = () => {
     }
   };
 
+
   const handleClickDeleteProject = async () => {
     try {
       await axios.delete(`http://localhost:8080/api/projects/${id}`, {
@@ -91,6 +94,15 @@ const ProjectDetails = () => {
     }
   };
 
+
+  const renameStatus = (originalStatus) => {
+    const statusMap = {
+      'TODO': 'To Do',
+      'IN_PROGRESS': 'In Progress',
+      'COMPLETED': 'Completed',
+    };
+
+    return statusMap[originalStatus] || originalStatus;
   const [editingTask, setEditingTask] = useState(null);
 
   const handleEditTask = async (updatedTask) => {
@@ -110,6 +122,7 @@ const ProjectDetails = () => {
       console.error('Error updating task:', error);
       alert('Failed to update task. Please try again.');
     }
+
   };
 
   const filteredTasks = tasks.filter(task =>
@@ -237,18 +250,27 @@ const ProjectDetails = () => {
               </div>
             ))}
           </ul>
-          
-          {/* {showModal && (
-            <div className="modal">
-              <div className="modal-content">
-                <p>Are you sure you want to delete this project?</p>
-                <div>
-                  <button onClick={handleClickDeleteProject}>Yes</button>
-                  <button onClick={() => setShowModal(false)}>No</button>
-                </div>
-              </div>
-            </div>
-          )} */}
+
+          {selectedTaskId && (
+            <button onClick={handleClickDelete}>Confirm Delete</button>
+          )}
+
+          <button onClick={() => setShowTaskBoard(!showTaskBoard)}>
+            {showTaskBoard ? "Hide Task Board" : "Show Task Board"}
+          </button>
+          {showTaskBoard && <TaskBoard projectId={project.id} />}
+
+          {user.role === "admin" && (
+            <Link to={`/projects/${project.id}/delete`}>
+              <button onClick={handleProjectDelete}>Delete Project</button>
+            </Link>
+          )}
+          <Link to={`/projects/${project.id}/edit`}>
+            <button>Edit Project</button>
+          </Link>
+          <Link to={`/projects/${project.id}/create-task`}>
+            <button>Create Task</button>
+          </Link>
         </article>
       )}
     </div>

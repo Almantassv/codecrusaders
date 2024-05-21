@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../services/AuthContext";
 import "../../styles/Navbar.css";
@@ -6,19 +6,22 @@ import "../../styles/Navbar.css";
 const Navbar = () => {
   const { token, user, logoutUser } = useAuth(); // Access token and logoutUser method from AuthContext
   const navigate = useNavigate();
+  const colors = ['rgba(27, 110, 48, 0.2)', '#1b6e3080', '#5EA2E265', '#F6E17090'];
+  const [colorIndex, setColorIndex] = useState(0); // State to keep track of the current color index
 
   const handleLogout = () => {
     logoutUser(); // Call logoutUser method from AuthContext
     navigate("/");
   };
 
-  const handleLogoClick = () => {
-    navigate("/list");
+  const changeColor = () => {
+    const nextIndex = (colorIndex + 1) % colors.length; // Calculate next color index
+    setColorIndex(nextIndex); // Update the color index state
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-logo" onClick={handleLogoClick}>
+    <nav className="navbar" style={{ backgroundColor: colors[colorIndex] }}>
+      <div className="navbar-logo" onClick={changeColor}>
         <img src="/frankenstein.png" alt="Frankenstein Icon" style={{ width: "30px", height: "30px", marginRight: "10px", cursor: "pointer" }} />  
         <h1>FRANKie</h1>
       </div>
@@ -28,11 +31,9 @@ const Navbar = () => {
           <div className="dafak">
             <Link to="/list">Projects</Link>
             <Link to="/create">New Project</Link>
-            
              
             <span className="user-name"><h4>{user.name}</h4></span>
             <button onClick={handleLogout}>Logout</button>
-            
           </div>
         ) : (
           <div className="fakfak">

@@ -3,12 +3,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../../services/AuthContext';
 
+
 const Login = () => {
     const authContext = useContext(AuthContext);
     const [formData, setFormData] = useState({ username: '', password: '' });
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [loginError, setLoginError] = useState({ badUsername: '', badPassword: '' });
+
+    const colors = ['rgba(27, 110, 48, 0.2)', '#1b6e3060', '#5EA2E265', '#F6E17090']; // Array of colors
+  const [colorIndex, setColorIndex] = useState(0); // State to keep track of the current color index
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -37,8 +42,13 @@ const Login = () => {
         setShowPassword(!showPassword);
     };
 
+    const changeColor = () => {
+        const nextIndex = (colorIndex + 1) % colors.length; // Calculate next color index
+        setColorIndex(nextIndex); // Update the color index state
+      };
+
     return (
-        <div className="wrapper">
+        <div className="wrapper" style={{ backgroundColor: colors[colorIndex] }} onClick={changeColor}>
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="username">Username</label>
@@ -46,6 +56,7 @@ const Login = () => {
                     <input
                         className={loginError.badUsername ? "bad-input" : ""}
                         type="text"
+                        spellCheck="false"
                         id="username"
                         name="username"
                         placeholder="Enter your username"

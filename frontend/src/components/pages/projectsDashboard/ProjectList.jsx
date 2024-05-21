@@ -68,14 +68,33 @@ const ProjectList = ({ projects, projectsPage, updateProjects, reachedMaxPage })
     }
     return description;
   };
+
+  const getProgressColor = (incompletedTasks, totalTasks) => {
+    if (totalTasks === 0) {
+      return '#ADA0A0'; // Black color for 0/0 progress
+    } else {
+    const progressPercentage = (totalTasks / incompletedTasks) * 100;
+    if (progressPercentage < 25) {
+      return '#E61111'; // Red color for less than 25% progress
+    } else if (progressPercentage < 50) {
+      return '#F3572B'; // Orange color for less than 50% progress
+    } else if (progressPercentage < 75) {
+      return '#FDD346'; // Yellow color for less than 75% progress
+    } else {
+      return '#79C343'; // Green color for 75% or more progress
+    }
+  }
+  };
   
   return (
     <div className="projects-container">
       <div className='projects-header'>
+          <div className='align'>
         <h1 className="projects-title">Projects</h1>
         <SearchBar />
+        </div>
         <div className='button-group'>
-        <button className='export-btn' onClick={exportToCSV}>Export projects to CSV</button>
+        <button className='export-btn' onClick={exportToCSV}></button>
         <Link to="/create">
           <button className="new-project-btn">+ New Project</button>
         </Link>
@@ -89,11 +108,14 @@ const ProjectList = ({ projects, projectsPage, updateProjects, reachedMaxPage })
             <div className="project-preview" key={project.id}>
               <Link to={`/projects/${project.id}`}>
                 <h3>{project.name}</h3>
-                <p>{truncateDescription(project.description)}</p>
-                <p>Status: {renameStatus(project.status)}</p>
+                <div className='description'>{truncateDescription(project.description)}</div>
+                <div className='status'>{renameStatus(project.status)}</div>
                 <div className="project-details">
-                  <p>Total tasks: {totalTasks}</p>
-                  <p>Incomplete tasks: {incompletedTasks}</p>
+                  <p>Total Tasks: {totalTasks}</p>
+                  <p>Incomplete: {incompletedTasks}</p>
+                  <div className="progress-bar">
+    <div className="progress" style={{ width: `${(incompletedTasks / totalTasks) * 100}%`, backgroundColor: getProgressColor(incompletedTasks, totalTasks) }}></div>
+  </div>
                 </div>
               </Link>
             </div>

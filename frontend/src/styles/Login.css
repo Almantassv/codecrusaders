@@ -4,19 +4,24 @@
     box-sizing: border-box;
 }
 
-body {
+/* body {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     min-width: 100%;
-    /* background: linear-gradient(90deg, #7359FB 0%, #E147AB 100%) */
-    /* background-color: rgba(97, 112, 248, 0.4); */
-}
+    background: linear-gradient(90deg, #7359FB 0%, #E147AB 100%);
+    background-color: rgba(27, 110, 48, 0.4);
+} */
 
 .content{
     display: flex;
     justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    min-width: 100%;
+    /* background: linear-gradient(90deg, #7359FB 0%, #E147AB 100%); */
+    background-color: #1b6e3066;
 }
 
 .wrapper {
@@ -41,6 +46,7 @@ body {
     margin: 30px 0;
 }
 
+/* Base styles for the input */
 .input-box input {
     width: 100%;
     height: 100%;
@@ -51,8 +57,49 @@ body {
     border-radius: 15px;
     padding-left: 10px;
     padding-right: 10px;
-    color: #0000000;
+    color: #000000;
 }
+
+.input-box input::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+
+/* Specific styles to handle autofill */
+.input-box input:-webkit-autofill {
+    background-color: transparent !important;
+    box-shadow: 0 0 0px 1000px transparent inset !important;
+    -webkit-text-fill-color: #000000 !important;
+}
+
+.input-box input:-webkit-autofill:focus {
+    background-color: transparent !important;
+    box-shadow: 0 0 0px 1000px transparent inset !important;
+    -webkit-text-fill-color: #000000 !important;
+}
+
+.input-box input:-webkit-autofill:hover {
+    background-color: transparent !important;
+    box-shadow: 0 0 0px 1000px transparent inset !important;
+    -webkit-text-fill-color: #000000 !important;
+}
+
+.input-box input:-webkit-autofill:active {
+    background-color: transparent !important;
+    box-shadow: 0 0 0px 1000px transparent inset !important;
+    -webkit-text-fill-color: #000000 !important;
+}
+
+/* For Firefox */
+.input-box input:-moz-autofill {
+    background-color: transparent !important;
+    box-shadow: 0 0 0px 1000px transparent inset !important;
+    -moz-text-fill-color: #000000 !important;
+}
+
 
 .input-box .bad-input {
     width: 100%;

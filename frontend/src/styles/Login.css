@@ -10,7 +10,8 @@ body {
     align-items: center;
     min-height: 100vh;
     min-width: 100%;
-    background: linear-gradient(90deg, #7359FB 0%, #E147AB 100%)
+    /* background: linear-gradient(90deg, #7359FB 0%, #E147AB 100%) */
+    /* background-color: rgba(97, 112, 248, 0.4); */
 }
 
 .content{

@@ -22,17 +22,28 @@
   width: 100%; /* Ensures the navbar spans the entire width of the page */
   padding: 25px;
   display: flex;
+  justify-content: center;
   align-items: center;
-  background-color: transparent; /* Optionally, add a background color to make it stand out */
+  background-color: rgba(251, 249, 252, 0.25); /* Black color with 80% opacity */
   z-index: 1000; /* Ensure it stays on top of other elements */
   border-bottom: 1px solid #f2f2f2;
 }
 
-.user-name {
+.user-name h4{
   background-color: #E4DBFE;
   border-radius: 20px;
   margin-left: 10px;
   padding: 15px;
+}
+
+.dafak {
+  display: flex;
+  align-items: center;
+}
+
+.fakfak {
+  display: flex;
+  align-items: center;
 }
 
 .navbar h1 {
@@ -59,19 +70,22 @@
 
 /* logout button */
 .links button {
-  font-size: 16px;
-  /* background-color:#7749F8; */
-  background-color: #ffffff00;
-  padding: 6px;
-  margin-left: 16px;
-  border-radius: 10px;
-  color: #000000;
-  border: none;
-  cursor: pointer;
+  background-color: #3b256e;
+    color: #fff;
+    border: none;
+    padding: 0.4rem;
+    margin-left: 15px;
+    cursor: pointer;
+    border-radius: 0.25rem;
 }
 
 .links button:hover{
   color: #E4DBFE;
   background-color: #7749F8;
   border-radius: 10px;
+}
+
+.navbar-logo {
+  display: flex;
+  gap: 1rem;
 }

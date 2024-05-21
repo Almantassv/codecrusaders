@@ -12,24 +12,33 @@ const Navbar = () => {
     navigate("/");
   };
 
+  const handleLogoClick = () => {
+    navigate("/list");
+  };
+
   return (
     <nav className="navbar">
-      <h1>FRANK</h1>
+      <div className="navbar-logo" onClick={handleLogoClick}>
+        <img src="/frankenstein.png" alt="Frankenstein Icon" style={{ width: "30px", height: "30px", marginRight: "10px", cursor: "pointer" }} />  
+        <h1>FRANKie</h1>
+      </div>
+
       <div className="links">
-        <Link to="/">Home</Link>
-        {token && (
-          <>
-            <Link to="/list">All Projects</Link>
+        {token ? (
+          <div className="dafak">
+            <Link to="/list">Projects</Link>
             <Link to="/create">New Project</Link>
-            <span className="user-name">{user.name}</span>
+            
+             
+            <span className="user-name"><h4>{user.name}</h4></span>
             <button onClick={handleLogout}>Logout</button>
-          </>
-        )}
-        {!token && (
-          <>
+            
+          </div>
+        ) : (
+          <div className="fakfak">
             <Link to="/login">Login</Link>
             <Link to="/register">Register</Link>
-          </>
+          </div>
         )}
       </div>
     </nav>

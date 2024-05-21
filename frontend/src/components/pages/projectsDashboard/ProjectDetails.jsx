@@ -8,12 +8,12 @@ import TaskBoard from "../tasksDashboard/TaskBoard";
 
 const ProjectDetails = () => {
   const { id } = useParams();
-  const { token } = useAuth(); // Access token from AuthContext
+  const { token, user } = useAuth(); // Assuming useAuth returns the user object with role
   const { data: project, error, isPending } = useFetch(
     `http://localhost:8080/api/projects/${id}`,
     token
   );
-  
+
   const [tasks, setTasks] = useState([]);
   const [showTaskBoard, setShowTaskBoard] = useState(false);
   const [tasksError, setTasksError] = useState(null);
@@ -56,7 +56,7 @@ const ProjectDetails = () => {
     }
   };
 
-  const handleClick = async () => {
+  const handleProjectDelete = async () => {
     try {
       await axios.delete(`http://localhost:8080/api/projects/${project.id}`, {
         headers: {
@@ -87,15 +87,12 @@ const ProjectDetails = () => {
   };
 
   const renameStatus = (originalStatus) => {
-    // Define mapping of original status values to renamed values
     const statusMap = {
       'TODO': 'To Do',
       'IN_PROGRESS': 'In Progress',
       'COMPLETED': 'Completed',
-      // Add more mappings as needed
     };
 
-    // Return renamed status value if mapping exists, otherwise return the original status value
     return statusMap[originalStatus] || originalStatus;
   };
 
@@ -133,9 +130,11 @@ const ProjectDetails = () => {
           </button>
           {showTaskBoard && <TaskBoard projectId={project.id} />}
 
-          <Link to={`/projects/${project.id}/delete`}>
-            <button>Delete Project</button>
-          </Link>
+          {user.role === "admin" && (
+            <Link to={`/projects/${project.id}/delete`}>
+              <button onClick={handleProjectDelete}>Delete Project</button>
+            </Link>
+          )}
           <Link to={`/projects/${project.id}/edit`}>
             <button>Edit Project</button>
           </Link>

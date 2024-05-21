@@ -13,7 +13,7 @@ public interface ProjectService {
     void deleteProjectById(Long id);
     Project updateProject(Long id, Project project);
     List<Project> getAllProjects();
-    List<Project> findProjectsByName(String name);
+    List<Project> findProjectsByName(String name, String status);
     Task createProjectTask(Long projectId, TaskCreationDTO taskCreationDTO);
     boolean deleteProjectTask(Long projectId, Long taskId);
     Task updateProjectTask(Long id, Long taskID, Task task);

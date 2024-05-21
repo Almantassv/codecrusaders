@@ -18,7 +18,10 @@ import './styles/Create.css';
 import './styles/TaskBoard.css';
 import CreateTask from './components/pages/tasksDashboard/CreateTask';
 import Admin from './components/pages/Admin/AdminBoard';
+
 import DeleteProjectPage from './components/pages/projectsDashboard/DeleteProjectPage';
+
+import TaskBoard from './components/pages/tasksDashboard/TaskBoard';
 
 function App() {
 
@@ -40,6 +43,7 @@ function App() {
             <Route path="/projects/:id" element={<PrivateRoute roles={['User', 'Admin']}><ProjectDetails /></PrivateRoute>} />
             <Route path="/projects/:id/edit" element={<PrivateRoute roles={['User', 'Admin']}><EditProject /></PrivateRoute>} />
             <Route path="/projects/:id/create-task" element={<PrivateRoute roles={['User', 'Admin']}><CreateTask /></PrivateRoute>} />
+            <Route path="/projects/:id/taskboard" element={<PrivateRoute roles={['User', 'Admin']}><TaskBoard /></PrivateRoute>} />
           </Routes>
           </div>
         </div>

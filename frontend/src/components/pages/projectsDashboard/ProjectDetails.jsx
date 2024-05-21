@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { useAuth } from "../../../services/useAuth";
 import useFetch from "../../../services/useFetch";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../../styles/ProjectDetails.css";
-
-
 import done from '../../../assets/done.png';
 import in_progress from '../../../assets/in_progress.png';
 import todo from '../../../assets/todo.png';
 
-
 const ProjectDetails = () => {
   const { id } = useParams();
-
   const { token, user } = useAuth(); // Assuming useAuth returns the user object with role
   const { data: project, error, isPending } = useFetch(
     `http://localhost:8080/api/projects/${id}`,
@@ -26,6 +21,8 @@ const ProjectDetails = () => {
   const [tasksIsPending, setTasksIsPending] = useState(true);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -48,7 +45,6 @@ const ProjectDetails = () => {
   }, [id, token]);
 
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
 
   const handleClickDelete = async () => {
     try {
@@ -64,7 +60,6 @@ const ProjectDetails = () => {
     }
   };
 
-
   const handleClickDeleteProject = async () => {
     try {
       await axios.delete(`http://localhost:8080/api/projects/${id}`, {
@@ -77,33 +72,6 @@ const ProjectDetails = () => {
       console.error("Error deleting project:", error);
     }
   };
-
-  const handleProjectStatusChange = async (newStatus) => {
-    try {
-      await axios.put(
-        `http://localhost:8080/api/projects/${id}`,
-        { status: newStatus },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-    } catch (error) {
-      console.error('Error updating project status:', error);
-    }
-  };
-
-
-  const renameStatus = (originalStatus) => {
-    const statusMap = {
-      'TODO': 'To Do',
-      'IN_PROGRESS': 'In Progress',
-      'COMPLETED': 'Completed',
-    };
-
-    return statusMap[originalStatus] || originalStatus;
-  const [editingTask, setEditingTask] = useState(null);
 
   const handleEditTask = async (updatedTask) => {
     try {
@@ -122,7 +90,6 @@ const ProjectDetails = () => {
       console.error('Error updating task:', error);
       alert('Failed to update task. Please try again.');
     }
-
   };
 
   const filteredTasks = tasks.filter(task =>
@@ -135,6 +102,15 @@ const ProjectDetails = () => {
     DONE: done
   };
 
+  const renameStatus = (originalStatus) => {
+    const statusMap = {
+      'TODO': 'To Do',
+      'IN_PROGRESS': 'In Progress',
+      'COMPLETED': 'Completed',
+    };
+
+    return statusMap[originalStatus] || originalStatus;
+  };
 
   return (
     <div className="project-details">
@@ -144,7 +120,7 @@ const ProjectDetails = () => {
         <article>
           <h2>{project.name} Id: {project.id}</h2>
           <h3>{project.description}</h3>
-          <h3>Status: {project.status}</h3>
+          <h3>Status: {renameStatus(project.status)}</h3>
           <h3>Members: </h3>
           <h3>Tasks: </h3>
           {/* Search Bar and Buttons */}
@@ -156,16 +132,20 @@ const ProjectDetails = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
+
             <Link to={`/projects/${project.id}/taskboard`}>
               <button>Show Task Board</button>
             </Link>
-            <button onClick={() => setShowModal(true)}>Delete Project</button>
+            {user.rol[0] === 'Admin' && (
+              <button onClick={() => setShowModal(true)}>Delete Project</button>
+            )}
             <Link to={`/projects/${project.id}/edit`}>
               <button>Edit</button>
             </Link>
             <Link to={`/projects/${project.id}/create-task`}>
               <button>Create Task</button>
             </Link>
+
           </div>
           {selectedTaskId && (
             <button className="confirm-delete-button-red" onClick={handleClickDelete}>Confirm Delete</button>
@@ -190,17 +170,11 @@ const ProjectDetails = () => {
                     <img src={statusIcons[task.status]} alt={task.status} />
                   </div>
                 </div>
-                <div className="task-description">
-                  {task.description}
-                </div>
-                <div className="task-priority">
-                  
-                </div>
+                <div className="task-description">{task.description}</div>
                 <div className="task-controls">
                   <button className="delete-task-btn" onClick={() => setSelectedTaskId(task.id)}>
                     <i className="fas fa-trash"></i> Delete
                   </button>
-                  
                   {editingTask === null || editingTask.id !== task.id ? (
                     <button onClick={() => setEditingTask(task)}>Edit</button>
                   ) : (
@@ -250,27 +224,6 @@ const ProjectDetails = () => {
               </div>
             ))}
           </ul>
-
-          {selectedTaskId && (
-            <button onClick={handleClickDelete}>Confirm Delete</button>
-          )}
-
-          <button onClick={() => setShowTaskBoard(!showTaskBoard)}>
-            {showTaskBoard ? "Hide Task Board" : "Show Task Board"}
-          </button>
-          {showTaskBoard && <TaskBoard projectId={project.id} />}
-
-          {user.role === "admin" && (
-            <Link to={`/projects/${project.id}/delete`}>
-              <button onClick={handleProjectDelete}>Delete Project</button>
-            </Link>
-          )}
-          <Link to={`/projects/${project.id}/edit`}>
-            <button>Edit Project</button>
-          </Link>
-          <Link to={`/projects/${project.id}/create-task`}>
-            <button>Create Task</button>
-          </Link>
         </article>
       )}
     </div>

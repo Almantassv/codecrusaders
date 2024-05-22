@@ -5,6 +5,7 @@ import lt.codecrusaders.backend.model.dto.TaskCreationDTO;
 import lt.codecrusaders.backend.model.entity.*;
 import lt.codecrusaders.backend.repositories.ProjectRepository;
 import lt.codecrusaders.backend.repositories.TaskRepository;
+import org.apache.commons.lang3.EnumUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -58,9 +59,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> findProjectsByName(String name, String status) {
-        if (status != null && !status.isEmpty()) {
-            return projectRepository.findByStatus(ProjectStatus.valueOf(status.toUpperCase()));
+    public List<Project> findProjectsByName(String name) {
+        ProjectStatus projectStatus = EnumUtils.getEnum(ProjectStatus.class, name.toUpperCase());
+        if (projectStatus != null) {
+            return projectRepository.findByStatus(projectStatus);
         }
         return projectRepository.findByNameContainingIgnoreCase(name);
     }
@@ -120,6 +122,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<Task> findProjectTasksByName(Long projectId, String name) {
+        EStatus taskStatus = EnumUtils.getEnum(EStatus.class, name.toUpperCase());
+        if (taskStatus != null) {
+            return taskRepository.findByStatus(taskStatus);
+        }
+        EPriority taskPriority = EnumUtils.getEnum(EPriority.class, name.toUpperCase());
+        if (taskPriority != null) {
+            return taskRepository.findByPriority(taskPriority);
+        }
         return taskRepository.findByProjectIdAndNameContaining(projectId, name);
     }
 }

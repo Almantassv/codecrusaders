@@ -48,8 +48,9 @@ const Login = () => {
       };
 
     return (
-        <div className="wrapper" style={{ backgroundColor: colors[colorIndex] }} onClick={changeColor}>
+        <div className="wrapper" style={{ backgroundColor: colors[colorIndex] }}>
             <h2>Login</h2>
+            {/* onClick={changeColor} */}
             <form onSubmit={handleSubmit}>
                 <label htmlFor="username">Username</label>
                 <div className="input-box">

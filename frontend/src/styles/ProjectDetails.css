@@ -6,14 +6,18 @@
 }
 
 .project-details article {
-  background-color: #fff;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
-  width: 100%;
-  height: 40rem;
+    background-color: rgba(255, 255, 255, 0.412);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 852px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 1.5rem;
+    margin-top: 6rem;
+    height: 800px;
+    overflow-y: scroll;
 }
 
 .project-details h2 {
@@ -50,7 +54,7 @@
 }
 
 .project-details a button {
-  background-color: #3C257C;
+  background-color: #8b5cf6;
 }
 
 .project-details a button:hover {
@@ -65,8 +69,8 @@
 }
 
 .task-list {
-  list-style: none; /* Remove default bullet points */
-  padding: 0; /* Remove default padding */
+  list-style: none;
+  padding: 0;
 }
 
 .task-item {
@@ -198,29 +202,31 @@
 .project-details h2 {
   font-size: 2rem;
   font-weight: bold;
-  color: #6b38c9;
+  color: #19171d;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
+
 
 /* Project Description */
 .project-details h3:nth-of-type(2) {
   font-size: 1.2rem;
   font-weight: 600;
-  color: #4c2d8a;
+  color: #393349;
 }
 
 /* Project ID */
-.project-details h2 span {
-  font-size: 1.2rem;
+.project-details h6 {
+  font-size: 1rem;
   font-weight: 600;
-  color: #4c2d8a;
+  color: #1f182e75;
 }
 
 /* Members */
-.project-details h3:nth-of-type(3) {
-  font-family: 'Roboto', sans-serif;
-  font-size: 1rem;
-  color: #7a5ac3;
+.project-details h3{
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #383346;
+  height: 100px;
 }
 
 /* Tasks */
@@ -235,16 +241,17 @@
   margin-bottom: 1rem;
 }
 
-
-
 .task-search-bar {
   width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
+  padding: 0.75rem;
+  /* margin-bottom: 1rem; */
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
   font-size: 1rem;
+  outline: none;
+  margin-right: 40px;
 }
+
 
 .edit-task-form-inline {
   display: flex;
@@ -296,22 +303,25 @@
 
 .project-details .fixed-header {
   display: flex;
-  align-items: center;
+  justify-items: space-between;
   position: sticky;
   top: 0;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.07);
   padding: 10px;
   z-index: 1000;
   border-bottom: 1px solid #ddd;
 }
 
-.task-search-bar {
+
+/* .task-search-bar {
   flex-grow: 1;
   margin-right: 10px;
-}
+} */
 
 .fixed-header button {
-  margin-right: 10px;
+  /* margin-right: 10px; */
+  height: 50px;
+  border-radius: 10px;
 }
 
 .task-description {
@@ -372,5 +382,7 @@
   color: white;
 }
 
-
-
+.edit-btn {
+  display: flex;
+  justify-content: space-between;
+}

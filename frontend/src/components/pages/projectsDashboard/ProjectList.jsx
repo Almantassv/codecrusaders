@@ -42,10 +42,12 @@ const ProjectList = ({ projects, projectsPage, updateProjects, reachedMaxPage })
     const project = projects.find(project => project.id === projectId);
     if (project) {
       const totalTasks = project.tasks.length;
-      const incompletedTasks = project.tasks.filter(task => task.status === "TODO", "IN_PROGRESS").length;
-      return { totalTasks, incompletedTasks };
+      const incompletedTasks = project.tasks.filter(task => task.status === "TODO" || task.status === "IN_PROGRESS").length;
+      const completedTasks = totalTasks - incompletedTasks ; // Calculate completed tasks
+      const percentageCompleted = totalTasks === 0 ? 0 : (completedTasks / totalTasks) * 100; // Calculate percentage
+      return { incompletedTasks, totalTasks, percentageCompleted };
     }
-    return { totalTasks: 0, completedTasks: 0 };
+    return { totalTasks: 0, incompletedTasks: 0, percentageCompleted: 0 };
   };
 
   // Function to rename status values
@@ -69,11 +71,11 @@ const ProjectList = ({ projects, projectsPage, updateProjects, reachedMaxPage })
     return description;
   };
 
-  const getProgressColor = (incompletedTasks, totalTasks) => {
+  const getProgressColor = (completedTasks, totalTasks) => {
     if (totalTasks === 0) {
       return '#ADA0A0'; // Black color for 0/0 progress
     } else {
-    const progressPercentage = (totalTasks / incompletedTasks) * 100;
+    const progressPercentage = (completedTasks / totalTasks) * 100;
     if (progressPercentage < 25) {
       return '#E61111'; // Red color for less than 25% progress
     } else if (progressPercentage < 50) {
@@ -114,7 +116,7 @@ const ProjectList = ({ projects, projectsPage, updateProjects, reachedMaxPage })
                   <p>Total Tasks: {totalTasks}</p>
                   <p>Incomplete: {incompletedTasks}</p>
                   <div className="progress-bar">
-    <div className="progress" style={{ width: `${(incompletedTasks / totalTasks) * 100}%`, backgroundColor: getProgressColor(incompletedTasks, totalTasks) }}></div>
+    <div className="progress" style={{ width: `${((totalTasks-incompletedTasks) / totalTasks) * 100}%`, backgroundColor: getProgressColor(incompletedTasks, totalTasks) }}></div>
   </div>
                 </div>
               </Link>

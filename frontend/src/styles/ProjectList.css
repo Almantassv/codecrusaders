@@ -9,7 +9,7 @@
   }
   
   .projects-title {
-    color: rgba(255, 255, 255, 0.912);
+    color: rgba(7, 7, 7, 0.912);
     font-size: 2rem;
   }
   
@@ -37,7 +37,7 @@
 
   .project-preview:hover {
     transform: scale(1.0);
-    background-color: rgba(238, 237, 237, 0.712);
+    background-color: rgba(255, 255, 255, 0.772);
     /* Apply the hover effect by scaling the card */
   }
   

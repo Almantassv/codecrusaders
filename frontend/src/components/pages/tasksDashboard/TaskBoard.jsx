@@ -4,10 +4,50 @@ import { useParams } from 'react-router-dom';
 import { useAuth } from '../../../services/AuthContext';
 import "../../../styles/TaskBoard.css";
 
+import done from '../../../assets/done.png';
+import in_progress from '../../../assets/in_progress.png';
+import todo from '../../../assets/todo.png';
+
 const apiBaseUrl = 'http://localhost:8080/api/projects';
 const axiosInstance = axios.create({
   baseURL: apiBaseUrl,
 });
+
+const TaskItem = ({ task, handleDragStart }) => {
+  const statusIcons = {
+    TODO: todo,
+    IN_PROGRESS: in_progress,
+    DONE: done
+  };
+
+  const renameStatus = (originalStatus) => {
+    const statusMap = {
+      'TODO': 'To Do',
+      'IN_PROGRESS': 'In Progress',
+      'COMPLETED': 'Completed',
+    };
+
+    return statusMap[originalStatus] || originalStatus;
+  };
+
+  return (
+    <li
+      key={task.id}
+      draggable
+      onDragStart={(e) => handleDragStart(e, task)}
+      className={`task-item task-priority-${task.priority.toLowerCase()}`}
+    >
+      <div className="task-header">
+        <div className="task-name">{task.name}</div>
+        <div className="task-status">
+          <img src={statusIcons[task.status]} alt={task.status} />
+        </div>
+      </div>
+      <div className="task-description">{task.description}</div>
+      
+    </li>
+  );
+};
 
 const TaskBoard = () => {
   const { token } = useAuth();
@@ -71,14 +111,11 @@ const TaskBoard = () => {
     return tasks
       .filter((task) => task.status === status)
       .map((task) => (
-        <li
+        <TaskItem
           key={task.id}
-          draggable
-          onDragStart={(e) => handleDragStart(e, task)}
-          className={`task-item ${getPriorityClass(task.priority)}`}
-        >
-          {task.name}
-        </li>
+          task={task}
+          handleDragStart={handleDragStart}
+        />
       ));
   };
 

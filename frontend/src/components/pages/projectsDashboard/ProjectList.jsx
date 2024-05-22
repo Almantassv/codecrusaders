@@ -71,11 +71,11 @@ const ProjectList = ({ projects, projectsPage, updateProjects, reachedMaxPage })
     return description;
   };
 
-  const getProgressColor = (completedTasks, totalTasks) => {
+  const getProgressColor = (incompletedTasks, totalTasks) => {
     if (totalTasks === 0) {
-      return '#ADA0A0'; // Black color for 0/0 progress
+      return '#cec7c7';
     } else {
-    const progressPercentage = (completedTasks / totalTasks) * 100;
+    const progressPercentage = ((totalTasks-incompletedTasks) / totalTasks) * 100;
     if (progressPercentage < 25) {
       return '#E61111'; // Red color for less than 25% progress
     } else if (progressPercentage < 50) {

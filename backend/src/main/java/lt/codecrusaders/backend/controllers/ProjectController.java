@@ -29,11 +29,10 @@ public class ProjectController {
     @GetMapping
     public ResponseEntity<List<Project>> getProjects(
         @RequestParam(required = false, name = "search") String searchQuery,
-        @RequestParam(required = false, name = "searchstatus") String searchStatusQuery,
         @RequestParam(required = false, name = "page") Integer page) {
         List<Project> projects;
-        if (searchQuery != null && !searchQuery.isEmpty() || searchStatusQuery != null && !searchStatusQuery.isEmpty()) {
-            projects = projectService.findProjectsByName(searchQuery, searchStatusQuery);
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            projects = projectService.findProjectsByName(searchQuery);
         } else {
             projects = projectService.getAllProjects();
         }

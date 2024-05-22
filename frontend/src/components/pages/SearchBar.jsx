@@ -51,7 +51,7 @@ const SearchBar = () => {
                 onChange={handleInputChange}
                 placeholder="Search projects..."
             />
-            {loading && <p>Loading...</p>}
+            {loading && <p></p>}
             {error && <p>{error}</p>}
             <div className='search-results-container'>
                 {searchResults.map((project) => (

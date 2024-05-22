@@ -37,7 +37,7 @@ public class ProjectController {
             projects = projectService.getAllProjects();
         }
         if (page != null && page > 0) {
-            int projectsPerPage = 10;
+            int projectsPerPage = 8;
             int maxPages = (int)Math.ceil((double)projects.size() / projectsPerPage);
             int startIndex = (page - 1) * projectsPerPage;
             int endIndex = Math.min(startIndex + projectsPerPage, projects.size());

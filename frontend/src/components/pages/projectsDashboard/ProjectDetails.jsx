@@ -118,11 +118,14 @@ const ProjectDetails = () => {
       {error && <div>{error}</div>}
       {project && (
         <article>
-          <h2>{project.name} Id: {project.id}</h2>
+          <div className="edit-btn">
+          <h2>{project.name} </h2><Link to={`/projects/${project.id}/edit`}>
+              <button>Edit Project</button>
+            </Link>
+           </div> 
+            <h6>Id: {project.id}</h6><h6>{renameStatus(project.status)}</h6>
           <h3>{project.description}</h3>
-          <h3>Status: {renameStatus(project.status)}</h3>
-          <h3>Members: </h3>
-          <h3>Tasks: </h3>
+          
           {/* Search Bar and Buttons */}
           <div className="fixed-header">
             <input
@@ -134,14 +137,14 @@ const ProjectDetails = () => {
             />
 
             <Link to={`/projects/${project.id}/taskboard`}>
-              <button>Show Task Board</button>
+              <button>Task Board</button>
             </Link>
             {user.rol[0] === 'Admin' && (
               <button onClick={() => setShowModal(true)}>Delete Project</button>
             )}
-            <Link to={`/projects/${project.id}/edit`}>
+            {/* <Link to={`/projects/${project.id}/edit`}>
               <button>Edit</button>
-            </Link>
+            </Link> */}
             <Link to={`/projects/${project.id}/create-task`}>
               <button>Create Task</button>
             </Link>

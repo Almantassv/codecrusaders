@@ -1,8 +1,10 @@
 .kanban-board {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  height: 80vh; /* Set the height to 100% of the viewport height */
+  width: 90vw; /* Set the width to 100% of the viewport width */
   padding: 20px;
-  gap: 10px;
+  box-sizing: border-box;
 }
 
 .lane {

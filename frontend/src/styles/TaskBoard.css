@@ -5,6 +5,7 @@
   width: 90vw; /* Set the width to 100% of the viewport width */
   padding: 20px;
   box-sizing: border-box;
+  margin-top: 3rem;
 }
 
 .lane {

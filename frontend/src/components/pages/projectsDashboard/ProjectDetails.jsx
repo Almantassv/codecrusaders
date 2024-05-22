@@ -112,6 +112,10 @@ const ProjectDetails = () => {
     return statusMap[originalStatus] || originalStatus;
   };
 
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="project-details">
       {isPending && <div>Loading...</div>}
@@ -121,6 +125,7 @@ const ProjectDetails = () => {
           <div className="edit-btn">
           <h2>{project.name} </h2><Link to={`/projects/${project.id}/edit`}>
               <button>Edit Project</button>
+              <button onClick={handleBackClick} style={{ backgroundColor: '#3b256e', color: 'white', border: 'none', cursor: 'pointer' }}>Back</button>
             </Link>
            </div> 
             <h6>Id: {project.id}</h6><h6>{renameStatus(project.status)}</h6>

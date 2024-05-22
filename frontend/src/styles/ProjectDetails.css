@@ -227,6 +227,7 @@
   font-weight: 400;
   color: #383346;
   height: 100px;
+  margin-top: 0.75rem;
 }
 
 /* Tasks */
@@ -289,13 +290,13 @@
   margin-top: 0.5rem;
   border: none;
   border-radius: 4px;
-  background-color: #e657eb;
+  background-color: #6b38c9;
   color: white;
   cursor: pointer;
 }
 
 .edit-task-form-inline button:hover {
-  background-color: #0056b3;
+  background-color: #3b256e;
 }
 
 
@@ -306,10 +307,13 @@
   justify-items: space-between;
   position: sticky;
   top: 0;
-  background-color: rgba(255, 255, 255, 0.07);
+  background-color: rgba(101, 194, 113, 0.158);
   padding: 10px;
-  z-index: 1000;
+  margin-top: 1.75rem;
+  margin-bottom: 1rem;
+  z-index: 800;
   border-bottom: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 

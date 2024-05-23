@@ -48,6 +48,7 @@
 
 .navbar h1 {
   color: #000000;
+  margin-top: 0.5rem;
 }
 .navbar .links {
   margin-left: auto;

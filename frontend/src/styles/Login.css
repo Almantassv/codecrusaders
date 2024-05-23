@@ -69,6 +69,22 @@
 }
 
 /* Specific styles to handle autofill */
+/* Webkit browsers (Chrome, Safari, Edge) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important; /* or the background color you prefer */
+    -webkit-text-fill-color: #000 !important; /* Ensure the text color is what you desire */
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Firefox */
+input:-moz-autofill {
+    box-shadow: 0 0 0 30px white inset !important; /* or the background color you prefer */
+    -moz-text-fill-color: #000 !important; /* Ensure the text color is what you desire */
+}
+
 .input-box input:-webkit-autofill {
     background-color: transparent !important;
     box-shadow: 0 0 0px 1000px transparent inset !important;

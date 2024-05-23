@@ -39,7 +39,7 @@ const CreateTask = () => {
     }
   };
 
-  const handleCancel = () => {
+  const handleBack = () => {
     navigate(-1);
   };
 
@@ -88,7 +88,8 @@ const CreateTask = () => {
         </select>
         <div className="form-buttons">
           <button type="submit">Create Task</button>
-          <button type="button" onClick={handleCancel}>Cancel</button>
+          <button type="button" onClick={handleBack}>Cancel</button>
+          <button onClick={handleBack} style={{ backgroundColor: '#3b256e', color: 'white', border: 'none', cursor: 'pointer', marginLeft: '151px'}}>Back to Project</button>
         </div>
       </form>
     </div>

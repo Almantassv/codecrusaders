@@ -3,8 +3,9 @@
     margin-top: 100px;
     padding: 2rem;
     border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* min-width: 1200px; */
+    box-shadow: 0 4px 6px #0000001a;
+    min-width: 99vw;
+    min-height: 82vh;
   }
   
   .projects-title {
@@ -165,4 +166,11 @@
 
   .projects-select {
     margin-left: 20px;
+    background-color: rgba(255, 255, 255, 0.912);
+    width: 350px;
+    height: 40px;
+    border-radius: 15px;
+    padding-left: 10px;
+    border: none;
+    outline: none;
   }

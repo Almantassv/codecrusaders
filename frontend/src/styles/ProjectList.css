@@ -162,3 +162,7 @@
     min-height: 3.65rem;
     max-height: 3.65rem;
   }
+
+  .projects-select {
+    margin-left: 20px;
+  }

@@ -6,7 +6,7 @@ import axios from 'axios';
 import SearchBar from '../SearchBar';
 import Paging from '../Paging';
 
-const ProjectList = ({ projects, projectsPage, updateProjects, reachedMaxPage }) => {
+const ProjectList = ({ projects, projectsPage, updateProjects, reachedMaxPage, projectsDisplayStr, projectsDisplay }) => {
   const { token } = useAuth();
 
   // State to manage the confirmation modal
@@ -87,6 +87,7 @@ const ProjectList = ({ projects, projectsPage, updateProjects, reachedMaxPage })
     }
   }
   };
+
   
   return (
     <div className="projects-container">
@@ -94,6 +95,17 @@ const ProjectList = ({ projects, projectsPage, updateProjects, reachedMaxPage })
           <div className='align'>
         <h1 className="projects-title">Projects</h1>
         <SearchBar />
+
+        <select
+          value={projectsDisplayStr} 
+          onChange={(e) => projectsDisplay(e.target.value)}
+          className='projects-select'
+        >
+          <option value="ALL">Show All</option>
+          <option value="IN_PROGRESS">In Progress</option>
+          <option value="COMPLETED">Completed</option>
+        </select>
+        
         </div>
         <div className='button-group'>
         <button className='export-btn' onClick={exportToCSV}></button>

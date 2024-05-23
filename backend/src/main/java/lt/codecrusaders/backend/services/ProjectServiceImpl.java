@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -59,10 +60,15 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> findProjectsByName(String name) {
-        ProjectStatus projectStatus = EnumUtils.getEnum(ProjectStatus.class, name.toUpperCase());
-        if (projectStatus != null) {
-            return projectRepository.findByStatus(projectStatus);
+    public List<Project> findProjectsByName(String name, String show) {
+        if (show != null) {
+            ProjectStatus projectStatus = EnumUtils.getEnum(ProjectStatus.class, show.toUpperCase());
+            if (projectStatus != null) {
+                if (name != null) {
+                    return projectRepository.findByNameContainingIgnoreCaseAndStatus(name, projectStatus);
+                }
+                return projectRepository.findByStatus(projectStatus);
+            }
         }
         return projectRepository.findByNameContainingIgnoreCase(name);
     }

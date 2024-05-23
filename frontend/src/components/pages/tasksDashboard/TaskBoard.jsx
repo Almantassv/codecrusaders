@@ -8,6 +8,8 @@ import done from '../../../assets/done.png';
 import in_progress from '../../../assets/in_progress.png';
 import todo from '../../../assets/todo.png';
 
+import { useNavigate } from 'react-router-dom';
+
 const apiBaseUrl = 'http://localhost:8080/api/projects';
 const axiosInstance = axios.create({
   baseURL: apiBaseUrl,
@@ -53,6 +55,7 @@ const TaskBoard = () => {
   const { token } = useAuth();
   const { id: projectId } = useParams();
   const [tasks, setTasks] = useState([]);
+  const navigate = useNavigate(); // Initialize the navigate function
 
   useEffect(() => {
     fetchTasks();
@@ -120,6 +123,8 @@ const TaskBoard = () => {
   };
 
   return (
+    <React.Fragment>
+    <button className='back-button' onClick={() => navigate(`/projects/${projectId}`)}>Back to Project</button>
     <div className="kanban-board">
       <div
         className="lane"
@@ -149,6 +154,7 @@ const TaskBoard = () => {
         <ul className="task-list">{renderTasksByStatus('DONE')}</ul>
       </div>
     </div>
+    </React.Fragment>
   );
 };
 

@@ -7,6 +7,7 @@ import '../../../styles/Create.css';
 const Create = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [priority, setPriority] = useState('');
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const { token } = useAuth(); // Access token from AuthContext
@@ -19,6 +20,9 @@ const Create = () => {
     if (!description) {
       newErrors.description = 'Description is required';
     }
+    if (!priority) {
+      newErrors.priority = 'Priority is required';
+    }
     return newErrors;
   };
 
@@ -30,7 +34,7 @@ const Create = () => {
       return;
     }
 
-    const project = { name, description };
+    const project = { name, description, priority, status: 'IN_PROGRESS' };
 
     try {
       await axios.post('http://localhost:8080/api/projects', project, {
@@ -69,6 +73,16 @@ const Create = () => {
             onChange={(e) => setDescription(e.target.value)}
           />
           {errors.description && <span className="error-message">{errors.description}</span>}
+        </div>
+        <div className="form-group">
+          <label>Priority: </label>
+          <select value={priority} onChange={(e) => setPriority(e.target.value)}>
+            <option value="">Select Priority</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+          {errors.priority && <span className="error-message">{errors.priority}</span>}
         </div>
         <button type="submit" onClick={handleSubmit}>Create Project</button>
         <button type="button" onClick={handleCancel}>Cancel</button>

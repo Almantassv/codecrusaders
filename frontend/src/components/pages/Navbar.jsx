@@ -19,11 +19,16 @@ const Navbar = () => {
     setColorIndex(nextIndex); // Update the color index state
   };
 
+  const navigation = useNavigate();
+  const navigateToProjects = () => {
+    navigation('/list');
+  };
+
   return (
     <nav className="navbar" style={{ backgroundColor: colors[colorIndex] }}>
-      <div className="navbar-logo" onClick={changeColor}>
-        <img src="/frankenstein.png" alt="Frankenstein Icon" style={{ width: "30px", height: "30px", marginRight: "10px", cursor: "pointer" }} />  
-        <h1>FRANKie</h1>
+      <div className="navbar-logo">
+        <Link to="/list"><img src="/frankenstein.png" alt="Frankenstein Icon" style={{ width: "30px", height: "30px", marginRight: "10px", cursor: "pointer" }} /></Link>  
+        <h1 onClick={navigateToProjects}>FRANKie</h1>
       </div>
 
       <div className="links">
@@ -32,7 +37,7 @@ const Navbar = () => {
             <Link to="/list">Projects</Link>
             <Link to="/create">New Project</Link>
              
-            <span className="user-name"><h4>{user.name}</h4></span>
+            <span className="user-name"><h4 onClick={changeColor}>{user.name}</h4></span>
             <button onClick={handleLogout}>Logout</button>
           </div>
         ) : (

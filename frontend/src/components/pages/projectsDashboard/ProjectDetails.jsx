@@ -122,12 +122,14 @@ const ProjectDetails = () => {
       {error && <div>{error}</div>}
       {project && (
         <article>
+          
+          <h2>{project.name} </h2>
           <div className="edit-btn">
-          <h2>{project.name} </h2><Link to={`/projects/${project.id}/edit`}>
           {user.rol[0] === 'Admin' && (
-              <button onClick={() => setShowModal(true)}>Delete Project</button>
+              <button onClick={() =>setShowModal(true)}>Delete Project</button>
             )}
-              <button>Edit Project</button>
+              <Link to={`/projects/${project.id}/edit`}>
+                <button>Edit Project</button>
               <button onClick={handleBackClick} style={{ backgroundColor: '#3b256e', color: 'white', border: 'none', cursor: 'pointer' }}>Back</button>
             </Link>
            </div> 

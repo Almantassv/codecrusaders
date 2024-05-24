@@ -6,7 +6,7 @@ import "../../styles/Navbar.css";
 const Navbar = () => {
   const { token, user, logoutUser } = useAuth(); // Access token and logoutUser method from AuthContext
   const navigate = useNavigate();
-  const colors = ['rgba(27, 110, 48, 0.2)', '#1b6e3080', '#5EA2E265', '#F6E17090'];
+  const colors = ['rgba(27, 110, 48, 0.2)', '#1b6e3080', '#5EA2E265', '#face5698'];
   const [colorIndex, setColorIndex] = useState(0); // State to keep track of the current color index
 
   const handleLogout = () => {

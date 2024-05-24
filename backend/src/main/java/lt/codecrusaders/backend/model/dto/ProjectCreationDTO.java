@@ -12,7 +12,7 @@ public class ProjectCreationDTO {
     @NotEmpty
     @Size(min = 1, max = 50, message = "Name must be between 1 and 50 characters")
     private String name;
-    @Size(min = 0, max = 200, message = "Description must be between 0 and 200 characters")
+    @Size(min = 0, max = 600, message = "Description must be between 0 and 600 characters")
     private String description;
     private ProjectStatus status;
 }

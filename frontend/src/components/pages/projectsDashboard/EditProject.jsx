@@ -46,22 +46,36 @@ const EditProject = () => {
     }
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'name') {
+      setName(prevName => value);
+    } else if (name === 'description') {
+      setDescription(prevDescription => value);
+    } else if (name === 'status') {
+      setStatus(prevStatus => value);
+    }
+  };
+  
+
   return (
     <div className="create">
       <h2>Edit Project</h2>
       <form className="form-container" onSubmit={handleSubmit}>
-        <label>Project Name *</label>
+        <label>Project Name</label>
         <input
+          name='name'
           value={name}
           type="text" 
           required 
-          onChange={(e) => setName(e.target.value)}
+          onChange={handleChange}
         />
         <label>Description</label>
         <textarea
+          name='description'
           value={description}
           required
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={handleChange}
         />
         <label>Status</label>
         <select
@@ -72,7 +86,7 @@ const EditProject = () => {
           <option value="COMPLETED">Completed</option>
         </select>
         <br />
-        <button type="submit">Save Changes</button>
+        <button type="submit" onClick={handleSubmit}>Save Changes</button>
       </form>
     </div>
   );

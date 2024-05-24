@@ -25,7 +25,7 @@ import TaskBoard from './components/pages/tasksDashboard/TaskBoard';
 
 function App() {
 
-  const colors = ['rgba(27, 110, 48, 0.2)', '#1b6e3060', '#5EA2E265', '#F6E17090'];
+  const colors = ['#1b6e3060', '#5EA2E265', '#F6E17090', '#000'];
   const [colorIndex, setColorIndex] = useState(0); // State to keep track of the current color index
 
   const changeColor = () => {
